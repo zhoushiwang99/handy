@@ -90,6 +90,7 @@ public enum ResponseCode {
 
     XH_NOT_REGESIT(18),
 
+    ILLEGAL_REQUEST(20)
 
     ;
 
