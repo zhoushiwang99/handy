@@ -5,8 +5,8 @@ import com.finals.handy.constant.ResponseCode;
 import com.finals.handy.mapper.UserLoginMapper;
 import com.finals.handy.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @author zsw
  */
-@Controller
+@RestController
 public class RefreshTokenController {
 
     @Autowired
@@ -26,6 +26,7 @@ public class RefreshTokenController {
         Map<String,Object> map = new HashMap<>(16);
 
         Map<String, Claim> claimMap = JwtUtil.verifyRefreshToken(refreshToken);
+        System.out.println(claimMap.get("userId").asString());
         int userId = Integer.parseInt(claimMap.get("userId").asString());
         if(userLoginMapper.isUserBlackById(userId)){
             map.put("code",ResponseCode.USER_IS_BLACK.getValue());

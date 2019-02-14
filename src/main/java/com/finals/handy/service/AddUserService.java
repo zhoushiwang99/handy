@@ -40,7 +40,8 @@ public class AddUserService {
     Logger logger = LoggerFactory.getLogger(getClass());
 
 
-    public static final String Reg_Code_Prefix = "Reg:";
+    public static final String Reg_Code_Prefix = "regist:code";
+
 
     /**
      * 发送注册时的短信验证码
@@ -57,7 +58,7 @@ public class AddUserService {
         }
 
         String code = SendShortMsgUtil.randomCode();
-        boolean result = SendShortMsgUtil.sendRegisterMsg(phone, code);
+        boolean result = SendShortMsgUtil.sendRegisterMsg(phone, code,2);
         if (!result) {
             map.put("code", ResponseCode.SEND_MSG_ERROR.getValue());
             return map;
@@ -68,6 +69,7 @@ public class AddUserService {
             return map;
         }
     }
+
 
     public Map<String, Object> verifyAccount(int userId, String viewState, String password, String checkCode,
                                              String studentId, String psdLen, String jwCookie) {
@@ -125,9 +127,6 @@ public class AddUserService {
         return map;
     }
 
-    public void verifyAccount() {
-
-    }
 
 
     /**
@@ -152,7 +151,6 @@ public class AddUserService {
 
         Map<String, Object> map = new HashMap<>(16);
 
-
         /*
         查看验证码是否正确
          */
@@ -162,6 +160,9 @@ public class AddUserService {
         }
 
         String correctCode = (String) redisService.get(Reg_Code_Prefix + phone);
+
+        redisService.remove(Reg_Code_Prefix + phone);
+
 
         if (!correctCode.equals(code)) {
             map.put("code", ResponseCode.PHONE_CODE_ERROR.getValue());

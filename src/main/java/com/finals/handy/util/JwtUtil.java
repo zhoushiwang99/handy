@@ -22,7 +22,7 @@ public class JwtUtil {
     /**
      * AccessToken密钥
      */
-    private static final String ACCESS_SECRET = "access token secret ";
+    private static final String ACCESS_SECRET = "access token secret";
 
     /**
      * RefreshToken密钥
@@ -53,11 +53,12 @@ public class JwtUtil {
      * @return
      */
     private static String createToken(int userId,String secret,long expireTime){
+        String userIdStr = String.valueOf(userId);
         Date date = new Date(System.currentTimeMillis() + expireTime);
         Algorithm algorithm = Algorithm.HMAC256(secret);
         //在refreshtoken中放入用户的id
         return JWT.create()
-                .withClaim("userId",userId)
+                .withClaim("userId",userIdStr)
                 .withExpiresAt(date)
                 .sign(algorithm);
     }

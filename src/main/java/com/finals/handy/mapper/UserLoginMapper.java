@@ -107,7 +107,7 @@ public interface UserLoginMapper {
      * @param studentId
      * @return
      */
-    @Select("select count(*) from xh_login where where student_id = #{studentId}")
+    @Select("select count(*) from xh_login  where student_id = #{studentId}")
     public int studentIdExist(String studentId);
 
     /**
