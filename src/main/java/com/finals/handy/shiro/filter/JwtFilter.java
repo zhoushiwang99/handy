@@ -22,7 +22,6 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
 
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        System.out.println("filter....");
         HttpServletRequest request1 = (HttpServletRequest) request;
         System.out.println(request1.getRequestURL());
         if (isLoginAttempt(request, response)) {
@@ -34,7 +33,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
 
         } else {
             //如果请求没有携带token请求头
-            request.setAttribute("request",ResponseCode.NOT_LOGIN.getValue());
+            request.setAttribute("status",ResponseCode.NOT_LOGIN.getValue());
             return false;
         }
     }

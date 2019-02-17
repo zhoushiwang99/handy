@@ -25,12 +25,12 @@ public class SendShortMsgUtil {
     /**
      * 申请到的 appkey
      */
-    private static final String APPKEY = "c468709ea45weqd5a945ad6f08decfc05";
+    private static final String APPKEY = "c468709ea4fc1d5a945ad6f08decfc05";
 
     /**
      * appid
      */
-    private static final int APPID = 1400211857;
+    private static final int APPID = 1400181857;
 
     /**
      * 注册模板id
