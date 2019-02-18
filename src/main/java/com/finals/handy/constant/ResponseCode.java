@@ -68,8 +68,14 @@ public enum ResponseCode {
      */
     PHONE_HAS_REGISTED(8),
 
+    /**
+     * 短信发送失败
+     */
     SEND_MSG_ERROR(17),
 
+    /**
+     * 学号已注册
+     */
     STUDENT_ID_REGISTED(13),
 
     /**
@@ -77,6 +83,9 @@ public enum ResponseCode {
      */
     PHONE_CODE_ERROR(9),
 
+    /**
+     * 手机号未注册
+     */
     PHONE_NOT_REGISTED(14),
     /**
      * 教务系统验证码错误
@@ -88,9 +97,27 @@ public enum ResponseCode {
      */
     JW_SERVER_ERROR(11),
 
+    /**
+     * 学号不存在
+     */
     XH_NOT_REGESIT(18),
 
-    ILLEGAL_REQUEST(20)
+    /**
+     * 非法请求
+     */
+    ILLEGAL_REQUEST(20),
+
+    /**
+     * 订单不存在
+     */
+    ORDER_NOT_EXIST(21),
+
+    /**
+     * 不能接取自己发布的订单
+     */
+    ORDER_PUBLISH_BY_ONE(22),
+
+    ORDER_HAS_RECEIVED(23)
 
     ;
 

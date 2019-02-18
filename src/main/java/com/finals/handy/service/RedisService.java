@@ -41,7 +41,6 @@ public class RedisService {
     public  boolean set(final String key,String value,Long expire){
         boolean result = false;
         try{
-            System.out.println(redisTemplate);
             ValueOperations<String, String> operations = redisTemplate.opsForValue();
             operations.set(key,value);
             redisTemplate.expire(key,expire, TimeUnit.SECONDS);
@@ -103,7 +102,7 @@ public class RedisService {
     }
 
     /**
-     * Redis根据keys批量珊瑚对应的value
+     * Redis根据keys批量删除对应的value
      * @param keys
      */
     public void remove(final String... keys) {
@@ -111,4 +110,14 @@ public class RedisService {
             remove(key);
         }
     }
+
+
+    public long incr(final String key,final long delta){
+        if(delta < 0){
+            throw new RuntimeException("递增因子必须大于0");
+        }
+        return redisTemplate.opsForValue().increment(key,delta);
+    }
+
+
 }

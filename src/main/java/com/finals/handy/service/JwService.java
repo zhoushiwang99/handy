@@ -177,7 +177,7 @@ public class JwService {
         System.out.println(status);
         if (SUCCESS_LOGIN.equals(status)) {
             map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
-        } else if (CODE_ERROR.equals(loginStatus)) {
+        } else if (CODE_ERROR.equals(status)) {
             map.put("code", ResponseCode.JW_CODE_ERROR.getValue());
         } else if (PASSWORD_ERROR.equals(status)) {
             map.put("code", ResponseCode.JW_PASSWORD_ERROR.getValue());

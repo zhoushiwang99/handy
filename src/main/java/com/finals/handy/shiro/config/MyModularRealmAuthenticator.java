@@ -22,12 +22,10 @@ public class MyModularRealmAuthenticator extends ModularRealmAuthenticator {
 
     @Override
     protected AuthenticationInfo doAuthenticate(AuthenticationToken authenticationToken) throws AuthenticationException {
-        System.out.println("4135416546");
         assertRealmsConfigured();
         Collection<Realm> realms = getRealms();
         Realm realm = null;
         if(authenticationToken instanceof UsernamePasswordToken){
-            System.out.println("userpa");
             for (Realm realm1 : realms){
                 System.out.println(realm1.getName());
                 if(realm1.getName().contains("User")){
@@ -36,7 +34,6 @@ public class MyModularRealmAuthenticator extends ModularRealmAuthenticator {
             }
         }
         else if(authenticationToken instanceof JwtToken){
-            System.out.println("jwt");
             for (Realm realm1 : realms){
                 System.out.println(realm1.getName());
                 if(realm1.getName().contains("Jwt")){
