@@ -117,7 +117,26 @@ public enum ResponseCode {
      */
     ORDER_PUBLISH_BY_ONE(22),
 
-    ORDER_HAS_RECEIVED(23)
+    /**
+     * 订单已被接取，无法再次接取
+     */
+    ORDER_HAS_RECEIVED(23),
+
+    /**
+     * 订单删除等待接取者同意
+     */
+    ORDER_DELETE_PROCESSING(24),
+
+    /**
+     * 不是当前订单接取者
+     */
+    NOT_ORDER_RECEIVER(25),
+
+    /**
+     * 订单已完成
+     */
+    ORDER_HAS_FINISHED(26)
+
 
     ;
 

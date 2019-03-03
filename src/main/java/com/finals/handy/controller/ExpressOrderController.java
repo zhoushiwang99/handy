@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.Map;
 
 /**
@@ -24,6 +25,13 @@ public class ExpressOrderController {
     @Autowired
     UserOrderService userOrderService;
 
+
+    @PostMapping("/express/finishOrder")
+    public Map<String,Object> finishOrder(String accessToken,String orderNum,@Size(min=0,max=40) String comment){
+        Map<String, Object> map = expressOrderService.finishOrder(accessToken, orderNum, comment);
+        return map;
+    }
+
     @PostMapping("/express/releaseOrder")
     public Map<String, Object> releaseExpressOrder(String accessToken, @Valid ExpressOrder expressOrder) {
         Map<String, Object> map = expressOrderService.releaseFoodOrder(accessToken, expressOrder);
@@ -31,8 +39,8 @@ public class ExpressOrderController {
     }
 
     @PostMapping("/express/receiveOrder")
-    public Map<String, Object> receiveExpressOrder(String accessToken, int expressOrderId) {
-        Map<String, Object> map = expressOrderService.receiveExpressOrder(accessToken, expressOrderId);
+    public Map<String, Object> receiveExpressOrder(String accessToken, String orderNum) {
+        Map<String, Object> map = expressOrderService.receiveExpressOrder(accessToken, orderNum);
         return map;
     }
 
@@ -42,15 +50,22 @@ public class ExpressOrderController {
         return map;
     }
 
-    @GetMapping("/user/getMyExpressOrder")
-    public Map<String, Object> getMyExpressOrder(String accessToken) {
-        Map<String, Object> map = userOrderService.getMyExpressOrder(accessToken);
+    @PostMapping("/user/getMyExpressOrder")
+    public Map<String, Object> getMyExpressOrder(String accessToken,@RequestParam(defaultValue = "1") int pageNo, @RequestParam(defaultValue = "3") int pageSize) {
+        Map<String, Object> map = userOrderService.getMyExpressOrder(accessToken,pageNo,pageSize);
         return map;
     }
 
-    @GetMapping("/express/deleteOrder")
+    @PostMapping("/express/deleteOrder")
     public Map<String, Object> deleteExpressOrder(String accessToken, String expressOrderId) {
-        return null;
+        Map<String, Object> map = expressOrderService.deleteExpressOrder(accessToken, expressOrderId);
+        return map;
+    }
+
+    @PostMapping("/express/agreeDelete")
+    public Map<String,Object> agreeDeleteOrder(String accessToken,String expressOrderNum) {
+        Map<String, Object> map = expressOrderService.agreeDeleteOrder(accessToken, expressOrderNum);
+        return map;
     }
 
 

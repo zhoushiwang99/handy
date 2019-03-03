@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * @author zsw
- * 带领
+ * 带领快递
  */
 public class ExpressOrder {
 
@@ -120,6 +120,11 @@ public class ExpressOrder {
      */
     private String finishTime;
 
+    /**
+     * 订单评价
+     */
+    private String comment;
+
 
     public Integer getPublisherId() {
         return publisherId;
@@ -127,6 +132,15 @@ public class ExpressOrder {
 
     public void setPublisherId(Integer publisherId) {
         this.publisherId = publisherId;
+    }
+
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Integer getId() {
