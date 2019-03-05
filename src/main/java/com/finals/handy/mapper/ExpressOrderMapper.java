@@ -29,13 +29,17 @@ public interface ExpressOrderMapper {
     @Delete("delete from published_express_order where order_number = #{orderNum}")
     void deleteOrderForPublicAfterFinish(String orderNum);
 
+
     /**
-     * 添加评论
+     * 根据订单号设置评价。完成时间、评分
      * @param orderNum
      * @param comment
+     * @param time
+     * @param score
      */
-    @Update("update finished_express_order set comment = #{comment},finish_time = #{time} where order_number = #{orderNum}")
-    void addCommentAndTime(String orderNum,String comment,String time);
+    @Update("update finished_express_order set comment = #{comment}," +
+            "finish_time = #{time},score = #{score} where order_number = #{orderNum}")
+    void addCommentAndTimeAndScore(String orderNum,String comment,String time,int score);
 
 
     /**

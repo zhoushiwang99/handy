@@ -39,6 +39,7 @@ public class RefreshTokenController {
             map.put("code",ResponseCode.REQUEST_SUCCEED.getValue());
             map.put("accessToken",newAccessToken);
             map.put("refreshToken",newRefreshToken);
+            System.out.println("token刷新成功");
             return map;
         }
     }

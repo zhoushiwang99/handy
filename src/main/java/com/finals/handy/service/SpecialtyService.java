@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.Size;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author zsw
@@ -34,14 +32,27 @@ public class SpecialtyService {
     GenerateNumUtil generateNumUtil;
 
     @Autowired
+    UserOrderService userOrderService;
+
+
+    @Autowired
     MessageService messageService;
 
     @Autowired
     RedisService redisService;
 
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> finishOrder(String accessToken, @Size(min = 0, max = 40) String comment, String orderNum) {
+    public Map<String, Object> finishOrder(String accessToken, @Size(min = 0, max = 40) String comment, String orderNum,Integer score) {
         Map<String, Object> map = new HashMap<>(16);
+
+        List<Integer> scores = Arrays.asList(1,2,3,4,5);
+        if(!scores.contains(score)){
+            map.put("code",ResponseCode.PARAM_ILLEGAL.getValue());
+            map.put("msg","评分只能为1、2、3、4、5");
+            return map;
+        }
+
+
         if (specialtyMapper.isOrderExistByOrderNum(orderNum) != 1) {
             map.put("code", ResponseCode.ORDER_NOT_EXIST.getValue());
             map.put("msg", "订单不存在");
@@ -76,9 +87,14 @@ public class SpecialtyService {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time = sdf.format(new Date());
+        specialtyMapper.addCommentAndTimeAndScoreByOrderNum(orderNum, comment, time,score);
 
-        specialtyMapper.addCommentAndTimeByOrderNum(orderNum, comment, time);
         String text = "您好，您接取的订单:" + orderNum + "已完成,感谢您的使用，谢谢";
+
+       //为发布者和接取着增加订单数量
+        userOrderService.addPublishOrderNumForUser(userId,1);
+        userOrderService.addReceiveOrderNumForUser(receivedId,1,score);
+
         messageService.SendMessage(Constant.HANDY_OFFICER_ID, Integer.valueOf(receivedId), text);
         map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
         return map;

@@ -27,8 +27,8 @@ public class ExpressOrderController {
 
 
     @PostMapping("/express/finishOrder")
-    public Map<String,Object> finishOrder(String accessToken,String orderNum,@Size(min=0,max=40) String comment){
-        Map<String, Object> map = expressOrderService.finishOrder(accessToken, orderNum, comment);
+    public Map<String,Object> finishOrder(String accessToken,String orderNum,@Size(min=0,max=40) String comment,int score){
+        Map<String, Object> map = expressOrderService.finishOrder(accessToken, orderNum, comment,score);
         return map;
     }
 
@@ -57,8 +57,8 @@ public class ExpressOrderController {
     }
 
     @PostMapping("/express/deleteOrder")
-    public Map<String, Object> deleteExpressOrder(String accessToken, String expressOrderId) {
-        Map<String, Object> map = expressOrderService.deleteExpressOrder(accessToken, expressOrderId);
+    public Map<String, Object> deleteExpressOrder(String accessToken, String orderNum) {
+        Map<String, Object> map = expressOrderService.deleteExpressOrder(accessToken, orderNum);
         return map;
     }
 

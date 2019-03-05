@@ -16,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.Size;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author zsw
@@ -36,20 +34,25 @@ public class ExpressOrderService {
     MessageService messageService;
 
     @Autowired
+    UserOrderService userOrderService;
+
+    @Autowired
     RedisService redisService;
 
 
     @Transactional(rollbackFor = Exception.class)
-    public Map<String,Object> finishOrder(String accessToken,String expressOrderNum,String comment){
-        Map<String,Object> map = new HashMap<>(16);
+    public Map<String,Object> finishOrder(String accessToken,String expressOrderNum,String comment,Integer score){
 
+        Map<String,Object> map = new HashMap<>(16);
+        List<Integer> scores = Arrays.asList(1,2,3,4,5);
+        if(!scores.contains(score)){
+            map.put("code",ResponseCode.PARAM_ILLEGAL.getValue());
+            return map;
+        }
         if(expressOrderMapper.isOrderExistByOrderNum(expressOrderNum) != 1){
             map.put("code",ResponseCode.ORDER_NOT_EXIST.getValue());
             return map;
         }
-
-//        String orderId = expressOrderMapper.getOrderIdByOrderNum(expressOrderNum);
-
 
         int publisherId = expressOrderMapper.getPublisherIdByOrderNum(expressOrderNum);
 
@@ -84,7 +87,12 @@ public class ExpressOrderService {
         String time = sdf.format(new Date());
         System.out.println(time);
 
-        expressOrderMapper.addCommentAndTime(expressOrderNum,comment,time);
+        expressOrderMapper.addCommentAndTimeAndScore(expressOrderNum,comment,time,score);
+
+        //为发布者和接取者增加订单数量
+        userOrderService.addReceiveOrderNumForUser(String.valueOf(receiverId),1,score);
+        userOrderService.addPublishOrderNumForUser(String.valueOf(userId),1);
+
 
         String text = "您好，您接取的订单:" + expressOrderNum + "已完成,感谢您的使用，谢谢";
 
@@ -139,10 +147,13 @@ public class ExpressOrderService {
      * 删除订单调用
      *
      * @param accessToken
-     * @param expressOrderId
+     * @param orderNum1
      * @return
      */
-    public Map<String, Object> deleteExpressOrder(String accessToken, String expressOrderId) {
+    public Map<String, Object> deleteExpressOrder(String accessToken, String orderNum1) {
+
+
+        String expressOrderId = expressOrderMapper.getOrderIdByOrderNum(orderNum1);
 
         Map<String, Object> map = new HashMap<>(16);
 
@@ -223,7 +234,7 @@ public class ExpressOrderService {
         expressOrder.setOrderNumber(generateNumUtil.getExpressOrderNumber());
 
         expressOrderMapper.realseExpressOrder(expressOrder);
-        map.put("expressOrderId", expressOrder.getId());
+        map.put("orderNum", expressOrder.getOrderNumber());
         map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
         return map;
     }

@@ -22,8 +22,8 @@ public class SpecialtyController {
     SpecialtyService specialtyService;
 
     @PostMapping("/specialty/finishOrder")
-    public Map<String,Object> finishOrder(String accessToken, @Size(min = 0,max = 40) String comment, String orderNum){
-        Map<String, Object> map = specialtyService.finishOrder(accessToken, comment, orderNum);
+    public Map<String,Object> finishOrder(String accessToken, @Size(min = 0,max = 40) String comment, String orderNum,int score){
+        Map<String, Object> map = specialtyService.finishOrder(accessToken, comment, orderNum,score);
         return map;
     }
 

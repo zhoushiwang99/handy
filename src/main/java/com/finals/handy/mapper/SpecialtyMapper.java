@@ -14,16 +14,20 @@ public interface SpecialtyMapper {
 
     /**
      * 订单完成时添加评价和时间
+     *
      * @param orderNum
      * @param comment
      * @param time
+     * @param score
      */
-    @Update("update finished_specialty_order set comment = #{comment},finish_time = #{time}")
-    void addCommentAndTimeByOrderNum(String orderNum,String comment,String time);
+    @Update("update finished_specialty_order set comment = #{comment},finish_time = #{time},score = #{score} " +
+            "where order_num = #{orderNum}")
+    void addCommentAndTimeAndScoreByOrderNum(String orderNum, String comment, String time, int score);
 
 
     /**
      * 根据订单号查询订单是否完成
+     *
      * @param orderNum
      * @return
      */
@@ -32,6 +36,7 @@ public interface SpecialtyMapper {
 
     /**
      * 订单完成后从可接取的订单中删除此订单
+     *
      * @param orderNum
      */
     @Delete("delete from published_specialty_order where order_num = #{orderNum}")
@@ -40,6 +45,7 @@ public interface SpecialtyMapper {
 
     /**
      * 将订单信息移到已完成的表
+     *
      * @param orderNum 订单号
      */
     @Insert("insert into finished_specialty_order(order_num,trade_name,buy_address,receive_address,publisher_id," +
@@ -51,6 +57,7 @@ public interface SpecialtyMapper {
 
     /**
      * 订单发布者想要删除订单，待接取者同意，需传入订单号
+     *
      * @param orderNum
      */
     @Update("update published_specialty_order set want_delete = 1 where order_num = #{orderNum}")
@@ -58,6 +65,7 @@ public interface SpecialtyMapper {
 
     /**
      * 订单发布者是否希望删除订单
+     *
      * @param orderNum
      * @return
      */
