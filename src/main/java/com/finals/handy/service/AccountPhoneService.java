@@ -102,13 +102,11 @@ public class AccountPhoneService {
             map.put("code", ResponseCode.XH_NOT_REGESIT.getValue());
             return map;
         }
-
         Map<String, Object> map = jwService.loginJw(viewState, password, checkCode, studentId, psdLen, cookie);
         int loginStatus = (int) map.get("code");
         if (loginStatus != ResponseCode.REQUEST_SUCCEED.getValue()) {
             return map;
         }
-
         int userId = userLoginMapper.getUserIdByStudentId(studentId);
         redisService.set(RESET_PHONE_USER_ID_PREFIX + userId, String.valueOf(userId), (long) 610);
 

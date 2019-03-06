@@ -27,7 +27,6 @@ public class MyModularRealmAuthenticator extends ModularRealmAuthenticator {
         Realm realm = null;
         if(authenticationToken instanceof UsernamePasswordToken){
             for (Realm realm1 : realms){
-                System.out.println(realm1.getName());
                 if(realm1.getName().contains("User")){
                     realm = realm1;
                 }
@@ -35,7 +34,6 @@ public class MyModularRealmAuthenticator extends ModularRealmAuthenticator {
         }
         else if(authenticationToken instanceof JwtToken){
             for (Realm realm1 : realms){
-                System.out.println(realm1.getName());
                 if(realm1.getName().contains("Jwt")){
                     realm = realm1;
                 }

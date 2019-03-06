@@ -6,6 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * @author zsw
+ */
 @SpringBootApplication
 @EnableTransactionManagement(proxyTargetClass = true)
 public class HandyApplication {

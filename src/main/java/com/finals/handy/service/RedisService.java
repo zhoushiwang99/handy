@@ -38,12 +38,40 @@ public class RedisService {
         return result;
     }
 
+    /**
+     * 写入redis缓存，设置expire存活时间(以秒为单位)
+     * @param key
+     * @param value
+     * @param expire
+     * @return
+     */
     public  boolean set(final String key,String value,Long expire){
         boolean result = false;
         try{
             ValueOperations<String, String> operations = redisTemplate.opsForValue();
             operations.set(key,value);
             redisTemplate.expire(key,expire, TimeUnit.SECONDS);
+            result = true;
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error("写入redis缓存（设置expire存活时间）失败！错误信息为：" + e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 写入redis缓存，设置expire存活时间(以小时为单位)
+     * @param key
+     * @param value
+     * @param expire
+     * @return
+     */
+    public  boolean setByHours(final String key,String value,Long expire){
+        boolean result = false;
+        try{
+            ValueOperations<String, String> operations = redisTemplate.opsForValue();
+            operations.set(key,value);
+            redisTemplate.expire(key,expire, TimeUnit.HOURS);
             result = true;
         }catch (Exception e){
             e.printStackTrace();
