@@ -1,5 +1,7 @@
 package com.finals.handy.mapper;
 
+import com.finals.handy.vo.UserInfo;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -13,6 +15,90 @@ import org.apache.ibatis.annotations.Update;
 public interface AccountMapper {
 
 
+    @Select("select sum_score from user_score where user_id = #{userId}")
+    int getUserSumScoreByUserId(String userId);
+
+    /**
+     * 根据用户id设置用户发布订单数
+     * @param userId
+     */
+    @Update("update user_score set publish_order_num = #{num} where user_id = #{userId}")
+    void setUserPublishOrderNumByUserId(String userId);
+
+    /**
+     * 获取用户发布的订单数
+     * @param userId
+     * @return
+     */
+    @Select("select publish_order_num from user_score where user_id = #{userId}")
+    int getUserPublishOrderNumByUserId(String userId);
+
+    /**
+     * 获取用户接取的订单数
+     * @param userId
+     * @return
+     */
+    @Select("select finish_order_num from user_score where user_id = #{userId}")
+    int getReceiveOrderNumByUserId(String userId);
+
+
+    /**
+     * 用户评分是否已存
+     * @param userId
+     * @return
+     */
+    @Select("select count(*) from user_score where user_id = #{userId}")
+    int ifUserHasScoreByUserId(String userId);
+
+    /**
+     * 根据用户id设置用户已完成订单数量
+     * @param userId
+     * @param num
+     */
+    @Update("update user_score set finish_order_num = #{num} where user_id = #{userId}")
+    void setReceiveOrderNumsByUserId(String userId,int num);
+
+    /**
+     * 根据用户id设置用户已发布订单数量
+     * @param userId
+     * @param num
+     */
+    @Update("update user_score set publish_order_num = #{num} where user_id = #{userId}")
+    void setPublishOrderNumsByUserId(String userId,int num);
+
+    /**
+     * 根据用户id获取用户当前评分
+     * @param userId
+     * @return
+     */
+    @Select("select sum_score from user_score where user_id = #{userId}")
+    int getScoreByUserId(String userId);
+
+    /**
+     * 根据用户id设置用户评分
+     * @param userId
+     * @param score
+     */
+    @Update("update user_score set sum_score = #{score} where user_id = #{userId}")
+    void setUserScoreByUserId(String userId,double score);
+
+
+    /**
+     * 在用户评分表里面添加用户id
+     * @param userId
+     */
+    @Insert("insert into user_score(user_id) values (#{userId})")
+    void addUserScoreInfo(String userId);
+
+
+
+    /**
+     * 根据用户id获取用户信息
+     * @param userId
+     * @return
+     */
+    @Select("select * from user_info where id = #{id}")
+    UserInfo getUserInfoByUserId(String userId);
 
     /**
      * 根据手机号获取用户id

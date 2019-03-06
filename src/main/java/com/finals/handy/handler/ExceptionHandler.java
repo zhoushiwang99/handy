@@ -5,10 +5,8 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.finals.handy.constant.ResponseCode;
 import org.apache.shiro.authz.AuthorizationException;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,12 +49,16 @@ public class ExceptionHandler {
         return map;
     }
 
+/*
     @org.springframework.web.bind.annotation.ExceptionHandler({ConstraintViolationException.class, BindException.class})
     public Map<String,Object> validationExceptionHandler(){
         HashMap<String, Object> map = new HashMap<>(16);
+
+        System.out.println("参数不合法");
         map.put("code",ResponseCode.PARAM_ILLEGAL.getValue());
         return map;
     }
+*/
 
 
 }
