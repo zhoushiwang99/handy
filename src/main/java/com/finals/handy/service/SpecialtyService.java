@@ -219,10 +219,14 @@ public class SpecialtyService {
         specialtyOrder.setPublishTime(sdf.format(new Date()));
         specialtyOrder.setOrderNum(generateNumUtil.getSpecialtyOrderNumber());
 
+        specialtyOrder.setAllMoney(specialtyOrder.getPayMoney() + specialtyOrder.getMoney());
+
+
         //将订单信息添加到数据库
         specialtyMapper.publishOrder(specialtyOrder);
 
         map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
+        map.put("orderNum",specialtyOrder.getOrderNum());
         return map;
     }
 

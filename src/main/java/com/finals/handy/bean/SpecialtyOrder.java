@@ -26,6 +26,12 @@ public class SpecialtyOrder {
     private String orderNum;
 
     /**
+     * 订单完成报酬
+     */
+    private double payMoney;
+
+
+    /**
      * 物品名称
      */
     @NotNull
@@ -89,12 +95,33 @@ public class SpecialtyOrder {
     private String buyAddress;
 
     /**
+     * 用户总支付金额
+     */
+    private double allMoney;
+
+    /**
      * 收货地址
      */
     @NotNull
     @Size(min = 1,max = 40)
     private String receiveAddress;
 
+
+    public double getAllMoney() {
+        return allMoney;
+    }
+
+    public void setAllMoney(double allMoney) {
+        this.allMoney = allMoney;
+    }
+
+    public double getPayMoney() {
+        return payMoney;
+    }
+
+    public void setPayMoney(double payMoney) {
+        this.payMoney = payMoney;
+    }
 
     public void setPublisherId(Integer publisherId) {
         this.publisherId = publisherId;
