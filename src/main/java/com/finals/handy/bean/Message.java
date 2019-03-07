@@ -62,6 +62,11 @@ public class Message {
         this.content = Content;
         this.state = State;
         this.time = time;
+        if (fromId > toId) {
+            Integer t = toId;
+            toId = fromId;
+            fromId = t;
+        }
         this.fromToId = fromId.toString() + toId.toString();
     }
 

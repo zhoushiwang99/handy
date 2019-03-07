@@ -25,6 +25,7 @@ public class MessageService {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         String time = sdf.format(date);
+
         Message message = new Message(fromId, toId, text, 0, time);
         messageMapper.addMessage(message);
         return message;
