@@ -63,8 +63,8 @@ public class ExpressOrderController {
     }
 
     @PostMapping("/express/agreeDelete")
-    public Map<String,Object> agreeDeleteOrder(String accessToken,String expressOrderNum) {
-        Map<String, Object> map = expressOrderService.agreeDeleteOrder(accessToken, expressOrderNum);
+    public Map<String,Object> agreeDeleteOrder(String accessToken,String orderNum) {
+        Map<String, Object> map = expressOrderService.agreeDeleteOrder(accessToken, orderNum);
         return map;
     }
 

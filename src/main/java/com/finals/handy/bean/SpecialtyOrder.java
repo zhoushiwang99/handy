@@ -28,6 +28,8 @@ public class SpecialtyOrder {
     /**
      * 订单完成报酬
      */
+    @NotNull
+    @Range(min = 1,max = 200)
     private double payMoney;
 
 
@@ -71,6 +73,7 @@ public class SpecialtyOrder {
     /**
      * 备注
      */
+    @Size(max = 40)
     private String remarks;
 
     /**

@@ -54,6 +54,7 @@ public class FoodOrder {
     /**
      * 订单报酬
      */
+    @NotNull
     @Range(min = 1, max = 100)
     private double payMoney;
 
