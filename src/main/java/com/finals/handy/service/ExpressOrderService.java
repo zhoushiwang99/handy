@@ -5,6 +5,7 @@ import com.finals.handy.bean.ExpressOrder;
 import com.finals.handy.constant.Constant;
 import com.finals.handy.constant.ResponseCode;
 import com.finals.handy.mapper.ExpressOrderMapper;
+import com.finals.handy.mapper.UserOrderMapper;
 import com.finals.handy.util.GenerateNumUtil;
 import com.finals.handy.util.JwtUtil;
 import com.github.pagehelper.Page;
@@ -35,6 +36,9 @@ public class ExpressOrderService {
 
     @Autowired
     UserOrderService userOrderService;
+
+    @Autowired
+    UserOrderMapper userOrderMapper;
 
     @Autowired
     RedisService redisService;
@@ -93,6 +97,9 @@ public class ExpressOrderService {
         userOrderService.addReceiveOrderNumForUser(String.valueOf(receiverId),1,score);
         userOrderService.addPublishOrderNumForUser(String.valueOf(userId),1);
 
+        userOrderMapper.addFinishedOrder(expressOrderNum,String.valueOf(publisherId),String.valueOf(receiverId));
+        userOrderMapper.deletePublishOrder(expressOrderNum);
+        userOrderMapper.deleteReceiveOrder(expressOrderNum);
 
         String text = "您好，您接取的订单:" + expressOrderNum + "已完成,感谢您的使用，谢谢";
 
@@ -133,9 +140,12 @@ public class ExpressOrderService {
 
         if(!expressOrderMapper.isWantDeleteByOrderNum(expressOrderNum)){
             map.put("code",ResponseCode.ILLEGAL_REQUEST.getValue());
+            map.put("msg","订单发布者并未请求取消订单");
             return map;
         }else{
             expressOrderMapper.deleteExpressOrderByOrderNum(expressOrderNum);
+            userOrderMapper.deletePublishOrder(expressOrderNum);
+            userOrderMapper.deleteReceiveOrder(expressOrderNum);
             map.put("code",ResponseCode.REQUEST_SUCCEED.getValue());
             return map;
         }
@@ -150,6 +160,7 @@ public class ExpressOrderService {
      * @param orderNum1
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> deleteExpressOrder(String accessToken, String orderNum1) {
 
 
@@ -174,6 +185,7 @@ public class ExpressOrderService {
 
         if (!expressOrderMapper.isReceived(expressOrderId)) {
             expressOrderMapper.deleteExpressOrder(expressOrderId);
+            userOrderMapper.deletePublishOrder(orderNum1);
             map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
             return map;
         } else {
@@ -208,6 +220,7 @@ public class ExpressOrderService {
      * @param expressOrder
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> releaseFoodOrder(String accessToken, ExpressOrder expressOrder) {
         Map<String, Object> map = new HashMap<>(16);
         String[] strings = new String[]{"东门", "西门", "南门", "弘二"};
@@ -234,6 +247,9 @@ public class ExpressOrderService {
         expressOrder.setOrderNumber(generateNumUtil.getExpressOrderNumber());
 
         expressOrderMapper.realseExpressOrder(expressOrder);
+        userOrderMapper.addPublishOrder(String.valueOf(publisherId),expressOrder.getOrderNumber());
+
+
         map.put("orderNum", expressOrder.getOrderNumber());
         map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
         return map;
@@ -269,7 +285,7 @@ public class ExpressOrderService {
         String time = sdf.format(new Date());
 
         expressOrderMapper.receiveExpressOrder(orderNum, userId, time);
-
+        userOrderMapper.addReceiveOrder(String.valueOf(userId),orderNum);
 
         String text = "您发布的订单:" + orderNum + "已被我接取,如有特殊情况请尽快与我联系";
 

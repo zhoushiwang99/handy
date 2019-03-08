@@ -7,6 +7,7 @@ import com.finals.handy.bean.FoodOrder;
 import com.finals.handy.constant.Constant;
 import com.finals.handy.constant.ResponseCode;
 import com.finals.handy.mapper.FoodOrderMapper;
+import com.finals.handy.mapper.UserOrderMapper;
 import com.finals.handy.util.GenerateNumUtil;
 import com.finals.handy.util.JwtUtil;
 import com.github.pagehelper.Page;
@@ -33,6 +34,9 @@ public class FoodService {
 
     @Autowired
     MessageService messageService;
+
+    @Autowired
+    UserOrderMapper userOrderMapper;
 
 
     @Autowired
@@ -68,6 +72,9 @@ public class FoodService {
 
             foodOrderMapper.publishOrder(foodOrder);
             foodOrderMapper.addFoodToPublish(foodOrder.getOrderNumber(), foods);
+
+            userOrderMapper.addPublishOrder(userId,foodOrder.getOrderNumber());
+
             map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
             map.put("orderNum", foodOrder.getOrderNumber());
             return map;
@@ -79,6 +86,7 @@ public class FoodService {
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> receiveOrder(String accessToken, String orderNum) {
 
         Map<String, Object> map = new HashMap<>(16);
@@ -106,6 +114,8 @@ public class FoodService {
 
         String time = sdf.format(new Date());
         foodOrderMapper.receiveOrder(userId, orderNum, time);
+        userOrderMapper.addReceiveOrder(userId,orderNum);
+
 
         String text = "您发布的订单:" + orderNum + "已被我接取,如有特殊情况请尽快与我联系";
 
@@ -156,7 +166,7 @@ public class FoodService {
         return map;
     }
 
-
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> agreeDeleteFoodOrder(String accessToken, String orderNum) {
         Map<String, Object> map = new HashMap<>(16);
         Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(accessToken);
@@ -182,12 +192,14 @@ public class FoodService {
             return map;
         } else {
             foodOrderMapper.deleteOrderByOrderNum(orderNum);
+            userOrderMapper.deletePublishOrder(orderNum);
+            userOrderMapper.deleteReceiveOrder(orderNum);
             map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
             return map;
         }
     }
 
-
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> deleteFoodOrder(String accessToken, String orderNum) {
         Map<String, Object> map = new HashMap<>(16);
         Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(accessToken);
@@ -208,6 +220,7 @@ public class FoodService {
 
         if (!foodOrderMapper.isOrderHasReceivedByOrderNum(orderNum)) {
             foodOrderMapper.deleteOrderByOrderNum(orderNum);
+            userOrderMapper.deletePublishOrder(orderNum);
             map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
             return map;
         } else {
@@ -219,7 +232,7 @@ public class FoodService {
             return map;
         }
     }
-
+    @Transactional(rollbackFor = Exception.class)
     public Map<String,Object> finishOrder(String accessToken,String orderNum,int score,String comment){
         Map<String, Object> map = new HashMap<>(16);
 
@@ -269,6 +282,10 @@ public class FoodService {
         //为发布者和接取着增加订单数量
         userOrderService.addPublishOrderNumForUser(userId,1);
         userOrderService.addReceiveOrderNumForUser(receivedId,1,score);
+
+        userOrderMapper.addFinishedOrder(orderNum,publisherId,receivedId);
+        userOrderMapper.deletePublishOrder(orderNum);
+        userOrderMapper.deleteReceiveOrder(orderNum);
 
         messageService.SendMessage(Constant.HANDY_OFFICER_ID, Integer.valueOf(receivedId), text);
         map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());

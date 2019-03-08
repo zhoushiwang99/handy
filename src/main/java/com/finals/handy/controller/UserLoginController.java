@@ -27,7 +27,6 @@ public class UserLoginController {
         Subject currentUser = SecurityUtils.getSubject();
         if(!currentUser.isAuthenticated()) {
             //把用户名和密码封装为 UsernamePasswordToken 对象
-            System.out.println("login request...");
             map = userLoginService.userPhoneLogin(phone, password);
         }else{
             map = new HashMap<>(16);

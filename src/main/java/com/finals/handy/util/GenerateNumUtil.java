@@ -23,22 +23,22 @@ public class GenerateNumUtil {
     /**
      * 代购食物订单前缀
      */
-    private static String FOOD_Order_PREFIX = "1";
+    public static String FOOD_Order_PREFIX = "1";
 
     /**
      * 带领快递订单前缀
      */
-    private static String EXPRESS_ORDER_PREFIX = "2";
+    public static String EXPRESS_ORDER_PREFIX = "2";
 
     /**
      * 代购特产订单前缀
      */
-    private static String SPECIALTY_ORDER_PREFIX = "3";
+    public static String SPECIALTY_ORDER_PREFIX = "3";
 
     /**
      * 闲置资源订单前缀
      */
-    private static String IDLE_RESOURCES_ORDER_PREFIX = "4";
+    public static String IDLE_RESOURCES_ORDER_PREFIX = "4";
 
 /*
     private GenerateNumUtil() {

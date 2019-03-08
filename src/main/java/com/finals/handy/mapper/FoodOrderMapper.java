@@ -2,6 +2,7 @@ package com.finals.handy.mapper;
 
 import com.finals.handy.bean.Food;
 import com.finals.handy.bean.FoodOrder;
+import com.finals.handy.vo.FinishedFoodOrder;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
 
@@ -12,6 +13,15 @@ import java.util.List;
  */
 @Mapper
 public interface FoodOrderMapper {
+
+
+    /**
+     * 根据订单号获取已完成的订单
+     * @param orderNum
+     * @return
+     */
+    @Select("select * from finished_food_order where order_number = #{orderNum}")
+    FinishedFoodOrder getFinishedOrderByNum(String orderNum);
 
 
     /**
@@ -32,7 +42,7 @@ public interface FoodOrderMapper {
     @Insert("insert into finished_food_order(order_number,publisher_id,contact_name,receive_address,finisher_id," +
             "publish_time,remarks,receive_time,total_money,pay_money,all_money) select order_number,publisher_id,contact_name," +
             "receive_address,receiver_id,publish_time,remarks," +
-            "receive_time,total_money,pay_money,all_money from published_food_order   where order_number = #{orderNum}")
+            "receive_time,total_money,pay_money,all_money from published_food_order where order_number = #{orderNum}")
     void addOrderToFinishedOrder(String orderNum);
 
     /**
@@ -90,6 +100,18 @@ public interface FoodOrderMapper {
      */
     @Select("select * from published_food_order where is_delete = 0 and is_received = 0")
     Page<FoodOrder> getPublishFoodOrder();
+
+
+    /**
+     * 根据订单号获取订单信息
+     * @param orderNum
+     * @return
+     */
+    @Select("select * from published_food_order where order_number = #{orderNum}")
+    FoodOrder getOrderByOrderNum(String orderNum);
+
+
+
 
 
     /**
@@ -168,14 +190,6 @@ public interface FoodOrderMapper {
             "<foreach collection='list' item='c' separator=','>(#{orderNum},#{c.foodName},#{c.money},#{c.address})</foreach></script>")
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     void addFoodToPublish(String orderNum,@Param("list") List<Food> foods);
-
-    /**
-     * 将order和food存入关系表
-     * @param orderId
-     * @param foodId
-     */
-    @Insert("insert into order_food(order_id,food_id) values (#{orderId},#{foodId})")
-    void setFoodOrderRelation(Integer orderId,Integer foodId);
 
 
 }

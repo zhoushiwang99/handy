@@ -55,7 +55,6 @@ public class ExceptionHandler {
     public Map<String,Object> validationExceptionHandler(){
         HashMap<String, Object> map = new HashMap<>(16);
 
-        System.out.println("参数不合法");
         map.put("code",ResponseCode.PARAM_ILLEGAL.getValue());
         return map;
     }

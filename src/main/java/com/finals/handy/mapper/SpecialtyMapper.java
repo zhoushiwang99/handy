@@ -1,6 +1,7 @@
 package com.finals.handy.mapper;
 
 import com.finals.handy.bean.SpecialtyOrder;
+import com.finals.handy.vo.FinishedSpecialtyOrder;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
 
@@ -11,6 +12,14 @@ import org.apache.ibatis.annotations.*;
  */
 @Mapper
 public interface SpecialtyMapper {
+
+    /**
+     * 根据订单号获取已完成的订单
+     * @param orderNum
+     * @return
+     */
+    @Select("select * from finished_specialty_order where order_num = #{orderNum}")
+    FinishedSpecialtyOrder getFinishedOrderByNum(String orderNum);
 
     /**
      * 订单完成时添加评价和时间
@@ -145,6 +154,14 @@ public interface SpecialtyMapper {
      */
     @Select("select * from published_specialty_order where publisher_id = #{id} and is_delete = 0")
     Page<SpecialtyOrder> getMySpecialtyOrder(String id);
+
+    /**
+     * 根据订单号获取订单详细信息
+     * @param orderNum
+     * @return
+     */
+    @Select("select * from published_specialty_order where order_num = #{num}")
+    SpecialtyOrder getOrderByOrderNum(String orderNum);
 
     /**
      * 获取当前可被接取的代购特产订单
