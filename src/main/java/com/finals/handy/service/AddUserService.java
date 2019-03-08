@@ -124,6 +124,8 @@ public class AddUserService {
 
         map.put("accessToken", accessToken);
         map.put("refreshToken", refreshToken);
+
+        redisService.set(UserLoginService.USER_TOKEN_PREFIX + userId,refreshToken,UserLoginService.TOKEN_EXPIRE_TIME);
         return map;
     }
 
