@@ -28,6 +28,8 @@ public class RefreshTokenController {
     @PostMapping("/guest/refreshToken")
     public Map<String,Object> refreshToken(String refreshToken){
 
+        System.out.println("refreshToken：" + refreshToken);
+
         Map<String,Object> map = new HashMap<>(16);
 
         Map<String, Claim> claimMap = JwtUtil.verifyRefreshToken(refreshToken);
@@ -44,6 +46,9 @@ public class RefreshTokenController {
 
             String newAccessToken = JwtUtil.createAccessToken(userId);
             String newRefreshToken = JwtUtil.createRefreshToken(userId);
+
+            redisService.set("user:token:" + userId,newRefreshToken, UserLoginService.TOKEN_EXPIRE_TIME);
+
             map.put("code",ResponseCode.REQUEST_SUCCEED.getValue());
             map.put("accessToken",newAccessToken);
             map.put("refreshToken",newRefreshToken);

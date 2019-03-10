@@ -30,7 +30,6 @@ public class SpecialtyController {
 
     @PostMapping("/specialty/publishOrder")
     public Map<String,Object> publishOrder(String accessToken,@Valid SpecialtyOrder specialtyOrder){
-        System.out.println(specialtyOrder);
         Map<String, Object> map = specialtyService.publishOrder(accessToken, specialtyOrder);
         return map;
     }

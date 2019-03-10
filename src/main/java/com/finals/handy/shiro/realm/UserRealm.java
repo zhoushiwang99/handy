@@ -51,7 +51,6 @@ public class UserRealm extends AuthorizingRealm {
         //从 UsernamePasswordToken中来获取phone
         String phone = usernamePasswordToken.getUsername();
         if(userLoginMapper.phoneExist(phone) != 1){
-            System.out.println("账号未知");
             throw new UnknownAccountException("手机号未注册");
         }
         if(!userLoginMapper.isUserVerifyByPhone(phone)){

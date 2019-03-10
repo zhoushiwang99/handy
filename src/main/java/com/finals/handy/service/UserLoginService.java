@@ -70,24 +70,23 @@ public class UserLoginService {
             return map;
         } catch (UnknownAccountException e) {
             map.put("code", ResponseCode.USER_NOT_EXIST.getValue());
-
+            return map;
         } catch (IncorrectCredentialsException e) {
             map.put("code", ResponseCode.PASSWORD_ERROR.getValue());
-
+            return map;
         } catch (LockedAccountException e) {
             int userId = addUserMapper.getUserIdByPhone(phone);
             map.put("userId",userId);
             map.put("code", ResponseCode.USER_NOT_VERIFY.getValue());
-
+            return map;
         } catch (DisabledAccountException e) {
             map.put("code", ResponseCode.USER_IS_BLACK.getValue());
-
+            return map;
         } catch (Exception e) {
             map.put("code", ResponseCode.SERVER_ERROR.getValue());
             e.printStackTrace();
+            return map;
         }
-
-        return map;
     }
 
     public Map<String, Object> xhLogin(String viewState, String password, String checkCode,
@@ -122,6 +121,8 @@ public class UserLoginService {
 
         map.put("accessToken", accessToken);
         map.put("refreshToken", refreshToken);
+
+        map.put("userId",userId);
 
         redisService.set(USER_TOKEN_PREFIX + userId,refreshToken,TOKEN_EXPIRE_TIME);
 

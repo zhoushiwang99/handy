@@ -62,10 +62,10 @@ public class HeadImgService {
             int sumScore = accountMapper.getScoreByUserId(userId);
             double score;
             if (receiveNum != 0) {
-                score = (sumScore*1.0) / receiveNum;
+                score = (sumScore * 1.0) / receiveNum;
                 BigDecimal bg = new BigDecimal(score).setScale(2, RoundingMode.UP);
                 score = bg.doubleValue();
-            }else {
+            } else {
                 score = 0;
             }
 
@@ -135,8 +135,11 @@ public class HeadImgService {
                 fileInputStream = new FileInputStream(file);
                 bytes = new byte[fileInputStream.available()];
                 fileInputStream.read(bytes);
-                fileInputStream.close();
                 System.out.println("找到了图片");
+                fileInputStream.close();
+                map.put("headImg", bytes);
+                map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
+                return map;
             } catch (FileNotFoundException e) {
                 //没找到图片则使用默认图片
                 try {
@@ -145,8 +148,12 @@ public class HeadImgService {
                     fileInputStream.read(bytes);
                     System.out.println("没找到图片");
                     fileInputStream.close();
+                    map.put("headImg", bytes);
+                    map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
+                    return map;
                 } catch (FileNotFoundException e1) {
                     logger.error("默认用户头像图片丢失");
+                    map.put("msg","用户默认头像图片丢失");
                     map.put("code", ResponseCode.SERVER_ERROR.getValue());
                     return map;
                 } catch (Exception e2) {
@@ -167,6 +174,10 @@ public class HeadImgService {
                 fileInputStream.read(bytes);
                 fileInputStream.close();
                 System.out.println("没找到图片");
+
+                map.put("headImg", bytes);
+                map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
+                return map;
             } catch (FileNotFoundException e1) {
                 logger.error("默认用户头像图片丢失");
                 map.put("code", ResponseCode.SERVER_ERROR.getValue());
@@ -177,9 +188,7 @@ public class HeadImgService {
                 return map;
             }
         }
-        map.put("headImg", bytes);
-        map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
-        return map;
+
     }
 
     public Map<String, Object> getUserInfo(String accessToken) {
