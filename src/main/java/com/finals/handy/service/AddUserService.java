@@ -116,6 +116,7 @@ public class AddUserService {
             return map;
         }
 
+        map.put("userId",userId);
         map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
         map.put("username", infoFromJw.get("姓名"));
 

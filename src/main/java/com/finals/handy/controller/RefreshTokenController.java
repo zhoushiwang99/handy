@@ -28,10 +28,13 @@ public class RefreshTokenController {
     @PostMapping("/guest/refreshToken")
     public Map<String,Object> refreshToken(String refreshToken){
 
-        System.out.println("refreshToken：" + refreshToken);
-
         Map<String,Object> map = new HashMap<>(16);
 
+        if(refreshToken == null){
+            map.put("code",ResponseCode.ILLEGAL_REQUEST.getValue());
+            map.put("msg","refreshToken不能为null");
+            return map;
+        }
         Map<String, Claim> claimMap = JwtUtil.verifyRefreshToken(refreshToken);
 
 
