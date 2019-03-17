@@ -59,7 +59,7 @@ public class FoodController {
     }
 
     @PostMapping("/food/finishOrder")
-    public Map<String,Object> finishOrder(String accessToken,String orderNum,int score,@Size(min = 0,max = 40) String comment){
+    public Map<String,Object> finishOrder(String accessToken,String orderNum,Integer score,@Size(min = 0,max = 40) String comment){
         Map<String, Object> map = foodService.finishOrder(accessToken, orderNum, score, comment);
         return map;
     }

@@ -8,6 +8,7 @@ import com.finals.handy.service.UserLoginService;
 import com.finals.handy.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class RefreshTokenController {
     RedisService redisService;
 
     @PostMapping("/guest/refreshToken")
-    public Map<String,Object> refreshToken(String refreshToken){
+    public Map<String,Object> refreshToken(@RequestParam("refreshToken") String refreshToken){
 
         Map<String,Object> map = new HashMap<>(16);
 

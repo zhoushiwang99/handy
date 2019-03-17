@@ -27,7 +27,7 @@ public class ExpressOrderController {
 
 
     @PostMapping("/express/finishOrder")
-    public Map<String,Object> finishOrder(String accessToken,String orderNum,@Size(min=0,max=40) String comment,int score){
+    public Map<String,Object> finishOrder(String accessToken,String orderNum,@Size(min=0,max=40) String comment,Integer score){
         Map<String, Object> map = expressOrderService.finishOrder(accessToken, orderNum, comment,score);
         return map;
     }
