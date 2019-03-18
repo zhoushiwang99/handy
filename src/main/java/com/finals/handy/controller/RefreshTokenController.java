@@ -31,11 +31,6 @@ public class RefreshTokenController {
 
         Map<String,Object> map = new HashMap<>(16);
 
-        if(refreshToken == null){
-            map.put("code",ResponseCode.ILLEGAL_REQUEST.getValue());
-            map.put("msg","refreshToken不能为null");
-            return map;
-        }
         Map<String, Claim> claimMap = JwtUtil.verifyRefreshToken(refreshToken);
 
 

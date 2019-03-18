@@ -2,7 +2,7 @@ spring:
   datasource:
     username: admin
     password: Zsw990807@@00
-    url: jdbc:mysql://47.106.159.165:3306/handy?useUnicode=true&serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+    url: jdbc:mysql://47.106.159.165:3306/handy?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
 
