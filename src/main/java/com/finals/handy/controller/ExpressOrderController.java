@@ -27,7 +27,7 @@ public class ExpressOrderController {
 
 
     @PostMapping("/express/finishOrder")
-    public Map<String,Object> finishOrder(String accessToken,String orderNum,@Size(min=0,max=40) String comment,Integer score){
+    public Map<String,Object> finishOrder(@RequestParam("accessToken") String accessToken,@RequestParam("orderNum") String orderNum,@Size(min=0,max=40) String comment,@RequestParam("score") Integer score){
         Map<String, Object> map = expressOrderService.finishOrder(accessToken, orderNum, comment,score);
         return map;
     }
@@ -39,7 +39,7 @@ public class ExpressOrderController {
     }
 
     @PostMapping("/express/receiveOrder")
-    public Map<String, Object> receiveExpressOrder(String accessToken, String orderNum) {
+    public Map<String, Object> receiveExpressOrder(@RequestParam("accessToken")String accessToken,@RequestParam("orderNum") String orderNum) {
         Map<String, Object> map = expressOrderService.receiveExpressOrder(accessToken, orderNum);
         return map;
     }
@@ -51,19 +51,19 @@ public class ExpressOrderController {
     }
 
     @PostMapping("/user/getMyExpressOrder")
-    public Map<String, Object> getMyExpressOrder(String accessToken,@RequestParam(defaultValue = "1") int pageNo, @RequestParam(defaultValue = "3") int pageSize) {
+    public Map<String, Object> getMyExpressOrder(@RequestParam("accessToken")String accessToken,@RequestParam(defaultValue = "1") int pageNo, @RequestParam(defaultValue = "3") int pageSize) {
         Map<String, Object> map = userOrderService.getMyExpressOrder(accessToken,pageNo,pageSize);
         return map;
     }
 
     @PostMapping("/express/deleteOrder")
-    public Map<String, Object> deleteExpressOrder(String accessToken, String orderNum) {
+    public Map<String, Object> deleteExpressOrder(@RequestParam("accessToken")String accessToken,@RequestParam("orderNum") String orderNum) {
         Map<String, Object> map = expressOrderService.deleteExpressOrder(accessToken, orderNum);
         return map;
     }
 
     @PostMapping("/express/agreeDelete")
-    public Map<String,Object> agreeDeleteOrder(String accessToken,String orderNum) {
+    public Map<String,Object> agreeDeleteOrder(@RequestParam("accessToken")String accessToken,@RequestParam("orderNum") String orderNum) {
         Map<String, Object> map = expressOrderService.agreeDeleteOrder(accessToken, orderNum);
         return map;
     }

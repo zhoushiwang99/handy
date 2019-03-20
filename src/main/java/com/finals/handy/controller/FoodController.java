@@ -29,7 +29,7 @@ public class FoodController {
     }
 
     @PostMapping("/food/receiveOrder")
-    public Map<String,Object> receiveOrder(String accessToken,String orderNum){
+    public Map<String,Object> receiveOrder(String accessToken,@RequestParam("orderNum") String orderNum){
         Map<String, Object> map = foodService.receiveOrder(accessToken, orderNum);
         return map;
     }
@@ -47,19 +47,19 @@ public class FoodController {
     }
 
     @PostMapping("/food/deleteOrder")
-    public Map<String,Object> deleteFoodOrder(String accessToken,String orderNum){
+    public Map<String,Object> deleteFoodOrder(String accessToken,@RequestParam("orderNum") String orderNum){
         Map<String, Object> map = foodService.deleteFoodOrder(accessToken, orderNum);
         return map;
     }
 
     @PostMapping("/food/agreeDeleteOrder")
-    public Map<String,Object> agreeDeleteFoodOrder(String accessToken,String orderNum){
+    public Map<String,Object> agreeDeleteFoodOrder(String accessToken,@RequestParam("orderNum")String orderNum){
         Map<String, Object> map = foodService.agreeDeleteFoodOrder(accessToken, orderNum);
         return map;
     }
 
     @PostMapping("/food/finishOrder")
-    public Map<String,Object> finishOrder(String accessToken,String orderNum,Integer score,@Size(min = 0,max = 40) String comment){
+    public Map<String,Object> finishOrder(String accessToken,@RequestParam("orderNum")String orderNum,@RequestParam("score") Integer score,@Size(min = 0,max = 40) String comment){
         Map<String, Object> map = foodService.finishOrder(accessToken, orderNum, score, comment);
         return map;
     }
