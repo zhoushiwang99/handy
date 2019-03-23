@@ -54,6 +54,10 @@ public class FoodService {
                 map.put("code", ResponseCode.PARAM_ILLEGAL.getValue());
                 map.put("msg", "食物数量超出10个");
                 return map;
+            }else if(foods.size() == 0){
+                map.put("code", ResponseCode.PARAM_ILLEGAL.getValue());
+                map.put("msg", "食物不能为空");
+                return map;
             }
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             foodOrder.setPublishTime(sdf.format(new Date()));
@@ -144,7 +148,6 @@ public class FoodService {
         }
 
         PageInfo<FoodOrder> myOrders = new PageInfo<>(myPublishFoodOrder);
-        System.out.println(myOrders);
 
         map.put("foodOrders", myOrders);
         map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());

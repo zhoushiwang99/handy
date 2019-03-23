@@ -3,6 +3,7 @@ package com.finals.handy.bean;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -32,6 +33,13 @@ public class FoodOrder {
     @NotNull
     @Size(min = 2, max = 15)
     private String contactName;
+
+    /**
+     * 联系人手机号
+     */
+    @NotNull
+    @Pattern(regexp = "^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\\d{8}$")
+    private String phone;
 
     /**
      * 收货地址
@@ -77,6 +85,14 @@ public class FoodOrder {
      * 接取者id
      */
     private String receiverId;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getReceiverId() {
         return receiverId;

@@ -186,6 +186,7 @@ public class UserOrderService {
                 map.put(i + ":express", order);
                 i++;
             } else if (String.valueOf(orderNum.charAt(0)).equals(GenerateNumUtil.SPECIALTY_ORDER_PREFIX)) {
+                System.out.println("ordernum:" + orderNum);
                 SpecialtyOrder order = specialtyMapper.getOrderByOrderNum(orderNum);
                 map.put(i + ":specialty", order);
                 i++;

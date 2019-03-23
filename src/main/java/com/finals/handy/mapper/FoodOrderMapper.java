@@ -40,9 +40,9 @@ public interface FoodOrderMapper {
      * @param orderNum
      */
     @Insert("insert into finished_food_order(order_number,publisher_id,contact_name,receive_address,finisher_id," +
-            "publish_time,remarks,receive_time,total_money,pay_money,all_money) select order_number,publisher_id,contact_name," +
+            "publish_time,remarks,receive_time,total_money,pay_money,all_money,phone) select order_number,publisher_id,contact_name," +
             "receive_address,receiver_id,publish_time,remarks," +
-            "receive_time,total_money,pay_money,all_money from published_food_order where order_number = #{orderNum}")
+            "receive_time,total_money,pay_money,all_money,phone from published_food_order where order_number = #{orderNum}")
     void addOrderToFinishedOrder(String orderNum);
 
     /**
@@ -173,9 +173,9 @@ public interface FoodOrderMapper {
      * @return
      */
     @Insert("insert into published_food_order(order_number,publisher_id,contact_name,receive_address" +
-            ",publish_time,remarks,total_money,pay_money,all_money) values " +
+            ",publish_time,remarks,total_money,pay_money,all_money,phone) values " +
             "(#{orderNumber},#{publisherId},#{contactName},#{receiveAddress},#{publishTime},#{remarks},#{totalMoney}," +
-            "#{payMoney},#{allMoney})")
+            "#{payMoney},#{allMoney},#{phone})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void publishOrder(FoodOrder foodOrder);
 
