@@ -39,6 +39,7 @@ public interface AddUserMapper {
      * @param phone
      * @return
      */
+    @Select("select id from phone_login where phone = #{phone}")
     int getUserIdByPhone(String phone);
 
 

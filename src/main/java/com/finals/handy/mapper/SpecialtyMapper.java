@@ -1,6 +1,7 @@
 package com.finals.handy.mapper;
 
 import com.finals.handy.bean.SpecialtyOrder;
+import com.finals.handy.vo.FinishedSpecialtyOrder;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
 
@@ -11,6 +12,14 @@ import org.apache.ibatis.annotations.*;
  */
 @Mapper
 public interface SpecialtyMapper {
+
+    /**
+     * 根据订单号获取已完成的订单
+     * @param orderNum
+     * @return
+     */
+    @Select("select * from finished_specialty_order where order_num = #{orderNum}")
+    FinishedSpecialtyOrder getFinishedOrderByNum(String orderNum);
 
     /**
      * 订单完成时添加评价和时间
@@ -49,8 +58,8 @@ public interface SpecialtyMapper {
      * @param orderNum 订单号
      */
     @Insert("insert into finished_specialty_order(order_num,trade_name,buy_address,receive_address,publisher_id," +
-            "contact_name,phone,publish_time,money,remarks,finisher_id) select order_num, trade_name," +
-            "buy_address,receive_address,publisher_id,contact_name,phone,publish_time,money,remarks,receiver_id " +
+            "contact_name,phone,publish_time,money,remarks,finisher_id,pay_money,all_money) select order_num, trade_name," +
+            "buy_address,receive_address,publisher_id,contact_name,phone,publish_time,money,remarks,receiver_id,pay_money,all_money  " +
             "from published_specialty_order where order_num = #{orderNum}")
     void finishOrderByOrderNum(String orderNum);
 
@@ -95,8 +104,9 @@ public interface SpecialtyMapper {
      *
      * @param specialtyOrder
      */
-    @Insert("insert into published_specialty_order(order_num,trade_name,buy_address,receive_address,publisher_id,contact_name,phone,publish_time,money,remarks) " +
-            "values(#{orderNum},#{tradeName},#{buyAddress},#{receiveAddress},#{publisherId},#{contactName},#{phone},#{publishTime},#{money},#{remarks})")
+    @Insert("insert into published_specialty_order(order_num,trade_name,buy_address,receive_address,publisher_id,contact_name,phone,publish_time,money,remarks," +
+            "pay_money,all_money) " +
+            "values(#{orderNum},#{tradeName},#{buyAddress},#{receiveAddress},#{publisherId},#{contactName},#{phone},#{publishTime},#{money},#{remarks},#{payMoney},#{allMoney})")
     void publishOrder(SpecialtyOrder specialtyOrder);
 
     /**
@@ -144,6 +154,14 @@ public interface SpecialtyMapper {
      */
     @Select("select * from published_specialty_order where publisher_id = #{id} and is_delete = 0")
     Page<SpecialtyOrder> getMySpecialtyOrder(String id);
+
+    /**
+     * 根据订单号获取订单详细信息
+     * @param orderNum
+     * @return
+     */
+    @Select("select * from published_specialty_order where order_num = #{num}")
+    SpecialtyOrder getOrderByOrderNum(String orderNum);
 
     /**
      * 获取当前可被接取的代购特产订单

@@ -5,6 +5,7 @@ import com.finals.handy.bean.SpecialtyOrder;
 import com.finals.handy.constant.Constant;
 import com.finals.handy.constant.ResponseCode;
 import com.finals.handy.mapper.SpecialtyMapper;
+import com.finals.handy.mapper.UserOrderMapper;
 import com.finals.handy.util.GenerateNumUtil;
 import com.finals.handy.util.JwtUtil;
 import com.github.pagehelper.Page;
@@ -30,6 +31,9 @@ public class SpecialtyService {
 
     @Autowired
     GenerateNumUtil generateNumUtil;
+
+    @Autowired
+    UserOrderMapper userOrderMapper;
 
     @Autowired
     UserOrderService userOrderService;
@@ -89,6 +93,10 @@ public class SpecialtyService {
         String time = sdf.format(new Date());
         specialtyMapper.addCommentAndTimeAndScoreByOrderNum(orderNum, comment, time,score);
 
+        userOrderMapper.deletePublishOrder(orderNum);
+        userOrderMapper.deleteReceiveOrder(orderNum);
+        userOrderMapper.addFinishedOrder(orderNum,publisherId,receivedId);
+
         String text = "您好，您接取的订单:" + orderNum + "已完成,感谢您的使用，谢谢";
 
        //为发布者和接取着增加订单数量
@@ -133,6 +141,8 @@ public class SpecialtyService {
             return map;
         } else {
             specialtyMapper.deleteOrderByOrderNum(orderNum);
+            userOrderMapper.deletePublishOrder(orderNum);
+            userOrderMapper.deleteReceiveOrder(orderNum);
             map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
             return map;
         }
@@ -168,6 +178,7 @@ public class SpecialtyService {
 
         if (!specialtyMapper.isOrderReceivedByOrderNum(orderNum)) {
             specialtyMapper.deleteOrderByOrderNum(orderNum);
+            userOrderMapper.deletePublishOrder(orderNum);
             map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
             return map;
         } else {
@@ -219,13 +230,20 @@ public class SpecialtyService {
         specialtyOrder.setPublishTime(sdf.format(new Date()));
         specialtyOrder.setOrderNum(generateNumUtil.getSpecialtyOrderNumber());
 
+        specialtyOrder.setAllMoney(specialtyOrder.getPayMoney() + specialtyOrder.getMoney());
+
+
         //将订单信息添加到数据库
         specialtyMapper.publishOrder(specialtyOrder);
+        userOrderMapper.addPublishOrder(userId,specialtyOrder.getOrderNum());
+
 
         map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
+        map.put("orderNum",specialtyOrder.getOrderNum());
         return map;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> receiveOrder(String accessToken, String orderNum) {
         Map<String, Object> map = new HashMap<>(16);
 
@@ -258,6 +276,7 @@ public class SpecialtyService {
         String time = sdf.format(new Date());
 
         specialtyMapper.receiveOrderByOrderNum(orderNum, userId, time);
+        userOrderMapper.addReceiveOrder(userId,orderNum);
 
         String text = "您发布的订单:" + orderNum + "已被我接取,如有特殊情况请尽快与我联系";
 

@@ -36,6 +36,13 @@ public class Food {
     @Size(min = 1, max = 20)
     private String address;
 
+    public Food(Integer id, @NotNull @Size(min = 1, max = 10) String foodName, @NotNull @Range(min = 1, max = 40) double money, @NotNull @Size(min = 1, max = 20) String address) {
+        this.id = id;
+        this.foodName = foodName;
+        this.money = money;
+        this.address = address;
+    }
+
     public Food(@NotNull @Size(min = 1, max = 10) String foodName) {
         this.foodName = foodName;
     }
@@ -72,6 +79,8 @@ public class Food {
         this.id = id;
     }
 
+
+
     @Override
     public String toString() {
         return "Food{" +
@@ -82,9 +91,6 @@ public class Food {
                 '}';
     }
 
-    public Food(@NotNull @Size(min = 1, max = 10) String foodName, @NotNull @Range(min = 1, max = 40) double money, @NotNull @Size(min = 1, max = 20) String address) {
-        this.foodName = foodName;
-        this.money = money;
-        this.address = address;
+    public Food() {
     }
 }

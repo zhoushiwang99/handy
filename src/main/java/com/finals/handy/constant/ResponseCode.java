@@ -135,9 +135,12 @@ public enum ResponseCode {
     /**
      * 订单已完成
      */
-    ORDER_HAS_FINISHED(26)
+    ORDER_HAS_FINISHED(26),
 
-
+    /**
+     * 账号在别处登录
+     */
+    USER_LOGIN_OTHER(30)
     ;
 
     private int value;

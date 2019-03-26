@@ -116,6 +116,7 @@ public class AddUserService {
             return map;
         }
 
+        map.put("userId",userId);
         map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
         map.put("username", infoFromJw.get("姓名"));
 
@@ -124,6 +125,8 @@ public class AddUserService {
 
         map.put("accessToken", accessToken);
         map.put("refreshToken", refreshToken);
+
+        redisService.set(UserLoginService.USER_TOKEN_PREFIX + userId,refreshToken,UserLoginService.TOKEN_EXPIRE_TIME);
         return map;
     }
 
