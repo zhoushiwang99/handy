@@ -27,9 +27,9 @@ public class WebSocketController {
     @Autowired
     private MessageService messageService;
 
-    @RequestMapping(value = "/socket.do/{AccessToken}/{fromId}", method = RequestMethod.GET)
-    public String toWebSocket(@PathVariable("AccessToken") String AccessToken,@PathVariable("fromId") String fromId, Model model) {
-        model.addAttribute("AccessToken",AccessToken );
+    @RequestMapping(value = "/socket.do/{accessToken}/{fromId}", method = RequestMethod.GET)
+    public String toWebSocket(@PathVariable("accessToken") String accessToken,@PathVariable("fromId") String fromId, Model model) {
+        model.addAttribute("AccessToken",accessToken );
         model.addAttribute("fromId", fromId);
 //        System.out.println(userId);
         // model.addAttribute("address","/javax/websocket");
@@ -40,10 +40,10 @@ public class WebSocketController {
     //    获取未读消息数返回
     @ResponseBody
     @RequestMapping(value = "/getMessageNum", method = RequestMethod.GET)
-    public Map<String, Object> getMessageNum(@RequestParam("AccessToken") String AccessToken) {
+    public Map<String, Object> getMessageNum(@RequestParam("accessToken") String accessToken) {
 
-        System.out.println(AccessToken);
-        Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(AccessToken);
+        System.out.println(accessToken);
+        Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(accessToken);
         String id = claimMap.get("userId").asString();
         Integer userId =Integer.parseInt(id);
         Integer num = messageService.findMessageNum(userId);
@@ -58,10 +58,10 @@ public class WebSocketController {
     //    查找我未读消息的 人 的Id 和对应消息数量
     @ResponseBody
     @RequestMapping(value = "/findIdAndNum", method = RequestMethod.GET)
-    public Map<String, Object> findIdAndMsgs(@RequestParam("AccessToken") String AccessToken) {
-//        Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(AccessToken);
+    public Map<String, Object> findIdAndMsgs(@RequestParam("accessToken") String accessToken) {
+//        Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(accessToken);
 //        String id = claimMap.get("userId").asString();
-        System.out.println(AccessToken);
+        System.out.println(accessToken);
         Integer userId = 2;//Integer.parseInt(id);
         List<Map<String, Integer>> list = new ArrayList<>();
         Map<Integer, Integer> idAndMsgs = messageService.findIdAndMsgs(userId);
@@ -84,10 +84,10 @@ public class WebSocketController {
 
     @ResponseBody
     @RequestMapping(value = "/findHistoryMsgs", method = RequestMethod.GET)
-    public Map<String,Object> findHistoryMsgs(@RequestParam("toId") Integer toId,@RequestParam("num") Integer num, @RequestParam("AccessToken") String AccessToken) {
+    public Map<String,Object> findHistoryMsgs(@RequestParam("toId") Integer toId,@RequestParam("num") Integer num, @RequestParam("accessToken") String accessToken) {
 //        Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(AccessToken);
 //        String id = claimMap.get("userId").asString();
-        System.out.println(AccessToken);
+        System.out.println(accessToken);
         Integer fromId = 2;//Integer.parseInt(id);
         List<Message> messages = messageService.findHistoryMessages(fromId, toId, num);
         Map<String, Object> map = new HashMap<>();

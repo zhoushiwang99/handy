@@ -38,11 +38,11 @@ public class TaskService {
     private CommentMapper commentMapper;
 
     @Transactional
-    public Map<String, Object> addTask(String AccessToken, String name, String content, MultipartFile[] files) {
+    public Map<String, Object> addTask(String accessToken, String name, String content, MultipartFile[] files) {
         Map<String, Object> map = null;
         Task task = new Task();
 
-        Integer userId = Integer.parseInt(AccessToken);// getId(AccessToken);
+        Integer userId = Integer.parseInt(accessToken);// getId(AccessToken);
 
 
         task.setPublishId(userId);
