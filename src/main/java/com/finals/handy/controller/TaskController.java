@@ -30,8 +30,8 @@ public class TaskController {
     //    添加任务
     @ResponseBody
     @RequestMapping(value = "/addTask", method = RequestMethod.POST)
-    public Map<String, Object> addTask(String AccessToken, String name, String content, MultipartFile[] file) {
-        return taskService.addTask(AccessToken, name, content, file);
+    public Map<String, Object> addTask(String accessToken, String name, String content, MultipartFile[] file) {
+        return taskService.addTask(accessToken, name, content, file);
     }
 
     //获取任务的总数量
@@ -58,8 +58,8 @@ public class TaskController {
     //    举报任务
     @ResponseBody
     @RequestMapping(value = "/reportTask", method = RequestMethod.GET)
-    public Map<String, Object> reportTask(String AccessToken, String reason, Integer id) {
-        return taskService.reportTask(AccessToken, reason, id);
+    public Map<String, Object> reportTask(String accessToken, String reason, Integer id) {
+        return taskService.reportTask(accessToken, reason, id);
     }
 
     //    取消举报任务
@@ -72,43 +72,43 @@ public class TaskController {
     //    接受任务
     @ResponseBody
     @RequestMapping(value = "/acceptTask", method = RequestMethod.GET)
-    public Map<String, Object> acceptTask(String AccessToken, Integer id) {
-        return taskService.acceptTask(AccessToken, id);
+    public Map<String, Object> acceptTask(String accessToken, Integer id) {
+        return taskService.acceptTask(accessToken, id);
     }
 
 
     //    取消任务
     @ResponseBody
     @RequestMapping(value = "/cancelTask", method = RequestMethod.GET)
-    public Map<String, Object> cancelTask(String AccessToken, Integer id) {
-        return taskService.cancelTask(AccessToken, id);
+    public Map<String, Object> cancelTask(String accessToken, Integer id) {
+        return taskService.cancelTask(accessToken, id);
     }
 
     //    完成任务
     @ResponseBody
     @RequestMapping(value = "/finishTask", method = RequestMethod.GET)
-    public Map<String, Object> finishTask(String AccessToken, Integer id) {
-        return taskService.finishTask(AccessToken, id);
+    public Map<String, Object> finishTask(String accessToken, Integer id) {
+        return taskService.finishTask(accessToken, id);
     }
     //    删除任务
     @ResponseBody
     @RequestMapping(value = "/deleteTask", method = RequestMethod.GET)
-    public Map<String, Object> deleteTask(String AccessToken, Integer id) {
-        return taskService.deleteTask(AccessToken, id);
+    public Map<String, Object> deleteTask(String accessToken, Integer id) {
+        return taskService.deleteTask(accessToken, id);
     }
 
     //    评论
     @ResponseBody
     @RequestMapping(value = "/commentTask", method = RequestMethod.POST)
-    public Map<String, Object> commentTask(String AccessToken, String content, Integer taskId) {
-        return taskService.commentTask(AccessToken, content, taskId);
+    public Map<String, Object> commentTask(String accessToken, String content, Integer taskId) {
+        return taskService.commentTask(accessToken, content, taskId);
     }
 
     //    举报评论
     @ResponseBody
     @RequestMapping(value = "/reportComment", method = RequestMethod.GET)
-    public Map<String, Object> reportComment(String AccessToken, Integer id, String reason) {
-        return taskService.reportComment(AccessToken, id, reason);
+    public Map<String, Object> reportComment(String accessToken, Integer id, String reason) {
+        return taskService.reportComment(accessToken, id, reason);
     }
 
     //    删除评论
