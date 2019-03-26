@@ -42,7 +42,7 @@ public class TaskService {
         Map<String, Object> map = null;
         Task task = new Task();
 
-        Integer userId = Integer.parseInt(accessToken);// getId(AccessToken);
+        Integer userId = getId(accessToken);
 
 
         task.setPublishId(userId);
@@ -157,7 +157,7 @@ public class TaskService {
     @Transactional
     public Map<String, Object> reportTask(String accessToken, String reason, Integer id) {
         Map<String, Object> map = new HashMap<>();
-        Integer userId = Integer.parseInt(accessToken);//getId(accessToken);
+        Integer userId = getId(accessToken);
         Report report = new Report();
         report.setReason(reason);
         report.setReportId(userId);
@@ -189,7 +189,8 @@ public class TaskService {
     public Map<String, Object> acceptTask(String accessToken, Integer id) {
         Map<String, Object> map = new HashMap<>();
 
-        Integer userId = Integer.parseInt(accessToken);//getId(accessToken);
+        Integer userId = getId(accessToken);
+
         if (taskMapper.acceptTask(id, userId)) {
 
             map.put("code", 0);
@@ -203,7 +204,8 @@ public class TaskService {
     @Transactional
     public Map<String, Object> cancelTask(String accessToken, Integer id) {
         Map<String, Object> map = new HashMap<>();
-        Integer userId = Integer.parseInt(accessToken);//getId(accessToken);
+        Integer userId = getId(accessToken);
+
         Task task = taskMapper.findTaskById(id);
         if (task.getAcceptId() == userId) {
             taskMapper.cancelTask(id);
@@ -219,7 +221,8 @@ public class TaskService {
     @Transactional
     public Map<String, Object> deleteTask(String accessToken, Integer id) {
         Map<String, Object> map = new HashMap<>();
-        Integer userId = Integer.parseInt(accessToken);//getId(accessToken);
+        Integer userId = getId(accessToken);
+
         Task task = taskMapper.findTaskById(id);
         if (userId == task.getPublishId()) {
             taskMapper.deleteTask(id);
@@ -251,7 +254,7 @@ public class TaskService {
 
     public Map<String, Object> commentTask(String accessToken, String content, Integer taskId) {
         Map<String, Object> map = new HashMap<>();
-        Integer userId = Integer.parseInt(accessToken);//getId(accessToken);
+        Integer userId = getId(accessToken);
 
         Comment comment = new Comment();
         comment.setTaskId(taskId);
@@ -270,7 +273,7 @@ public class TaskService {
     @Transactional
     public Map<String, Object> reportComment(String accessToken, Integer id, String reason) {
         Map<String, Object> map = new HashMap<>();
-        Integer userId = Integer.parseInt(accessToken);//getId(accessToken);
+        Integer userId = getId(accessToken);
         Report report = new Report();
         report.setTime(getTime());
         report.setReportId(userId);
@@ -309,7 +312,7 @@ public class TaskService {
     @Transactional
     public Map<String, Object> finishTask(String accessToken, Integer id) {
         Map<String, Object> map = new HashMap<>();
-        Integer userId = Integer.parseInt(accessToken);//getId(accessToken);
+        Integer userId = getId(accessToken);
         Task task = taskMapper.findTaskById(id);
         if (userId == task.getAcceptId()) {
             taskMapper.finishTask(id);
