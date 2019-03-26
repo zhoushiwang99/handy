@@ -26,5 +26,7 @@ public interface CommentMapper {
 //    查找n个评论
     @Select("select * from comment where taskId=#{taskId}  limit 0,#{n}")
     List<Comment> getComments(Integer n,Integer taskId);
-
+//查找一个评论
+    @Select("select * from comment where id=#{id}")
+    Comment findById(Integer id);
 }

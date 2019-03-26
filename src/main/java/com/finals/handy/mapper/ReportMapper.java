@@ -1,10 +1,7 @@
 package com.finals.handy.mapper;
 
 import com.finals.handy.bean.Report;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.*;
 
 /**
  * @author xiaoqiang
@@ -20,4 +17,11 @@ public interface ReportMapper {
     //    删
     @Delete("delete from report where id=#{id}")
     boolean deleteReport(Integer id);
+
+//    查
+    @Select("select * from report where reportId=#{id}")
+    Report findReportByUId(Integer id);
+
+    @Select("select  * from report where id=#{id}")
+    Report findReportById(Integer id);
 }
