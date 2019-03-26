@@ -136,18 +136,26 @@ public class TaskService {
             task.setImgsPath(imgPath);
         }
         map.put("tasks", tasks);
-        map.put("code", 1);
+        map.put("code", 0);
         return map;
     }
 
     @Transactional
-    public Map<String, Object> updateTask(Integer id, String name, String content) {
-        Task task = new Task();
+    public Map<String, Object> updateTask(String accessToken, Integer id, String name, String content) {
         Map<String, Object> map = new HashMap<>();
-        task.setId(id);
-        task.setName(name);
-        task.setContent(content);
-        taskMapper.updateTask(task);
+
+        Integer id1 = getId(accessToken);
+        Task taskById = taskMapper.findTaskById(id);
+//        System.out.println(id1);
+//        System.out.println(taskById);
+
+        if (taskById.getPublishId() != id1) {
+            map.put("code", 1);
+            return map;
+        }
+        taskById.setName(name);
+        taskById.setContent(content);
+        taskMapper.updateTask(taskById);
 
         map.put("code", 0);
         return map;
@@ -235,13 +243,21 @@ public class TaskService {
     }
 
     @Transactional
-    public Map<String, Object> cancelReportTask(Integer id, Integer taskId) {
+    public Map<String, Object> cancelReportTask(String accessToken, Integer id, Integer taskId) {
+        Integer id1 = getId(accessToken);
+        Report report = reportMapper.findReportById(id);
         Map<String, Object> map = new HashMap<>();
-//        取消举报
+
+        if (report == null || report.getReportId()!=id1) {
+            map.put("code", 1);
+            return map;
+        }
+
+//        取消举报    不成功
         if (!taskMapper.cancelReportTask(taskId)) {
             map.put("code", 1);
         }
-//        删除举报
+//        删除举报  不成功
         else if (!reportMapper.deleteReport(id)) {
             map.put("code", 1);
 
@@ -289,8 +305,21 @@ public class TaskService {
     }
 
 
-    public Map<String, Object> deleteComment(Integer id) {
+    public Map<String, Object> deleteComment(String accessToken,Integer id) {
+        Integer id1 = getId(accessToken);
+//        System.out.println(id1);
+
         Map<String, Object> map = new HashMap<>();
+
+        Comment comment = commentMapper.findById(id);
+
+//        System.out.println(comment);
+
+        if (comment == null) {
+            map.put("code", 1);
+            return map;
+        }
+
 
         if (commentMapper.deleteComment(id)) {
             map.put("code", 0);
@@ -314,7 +343,7 @@ public class TaskService {
         Map<String, Object> map = new HashMap<>();
         Integer userId = getId(accessToken);
         Task task = taskMapper.findTaskById(id);
-        if (userId == task.getAcceptId()) {
+        if (task!=null&&userId == task.getAcceptId()) {
             taskMapper.finishTask(id);
             map.put("code", 0);
         } else {
