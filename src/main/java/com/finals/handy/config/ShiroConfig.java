@@ -42,6 +42,7 @@ public class ShiroConfig {
     @Bean("shiroFilter")
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+//
         shiroFilterFactoryBean.setLoginUrl("/guest/phoneLogin");
         shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized");
         Map<String, Filter> filterMap = new LinkedHashMap<>();

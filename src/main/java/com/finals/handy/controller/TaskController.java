@@ -21,7 +21,7 @@ import java.util.UUID;
  * @author xiaoqiang
  * @date $(DATE)-$(TIME)
  */
-@RequestMapping(value = "/guest")
+@RequestMapping(value = "/user")
 @Controller
 public class TaskController {
     @Autowired
