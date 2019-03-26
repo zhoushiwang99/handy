@@ -1,6 +1,7 @@
 package com.finals.handy.mapper;
 
 import com.finals.handy.bean.ExpressOrder;
+import com.finals.handy.vo.FinishedExpressOrder;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.*;
 
@@ -9,6 +10,16 @@ import org.apache.ibatis.annotations.*;
  */
 @Mapper
 public interface ExpressOrderMapper {
+
+
+    /**
+     *
+     * 传入订单号获取已完成的订单
+     * @param orderNum
+     * @return
+     */
+    @Select("select * from finished_express_order where order_number = #{orderNum}")
+    FinishedExpressOrder getOrderFromFinishedByNum(String orderNum);
 
 
     /**
@@ -64,9 +75,9 @@ public interface ExpressOrderMapper {
      * @param orderNum
      */
     @Insert("insert into finished_express_order(order_number,publisher_id,finisher_id,contact_name," +
-            "contact_number,publish_time,pay_money,pickup_door,pickup_address,dormitory_building,dormitory_number,remarks)" +
+            "contact_number,publish_time,pay_money,pickup_door,pickup_address,dormitory_building,dormitory_number,remarks,company_name)" +
             "select order_number,publisher_id,receiver_id,contact_name,contact_number,publish_time,pay_money,pickup_door,pickup_address,dormitory_building," +
-            "dormitory_number,remarks from published_express_order where order_number = #{orderNum}")
+            "dormitory_number,remarks,company_name from published_express_order where order_number = #{orderNum}")
     void finishOrder(String orderNum);
 
     /**
@@ -117,6 +128,18 @@ public interface ExpressOrderMapper {
             "pickup_address pickupAddress,pay_money payMoney," +
             "remarks,publish_time publishTime from published_express_order where is_received = 0 and is_delete = 0")
     Page<ExpressOrder> getPublishedExpressOrder();
+
+
+    /**
+     * 根据订单号获取发布的订单
+     * @param orderNum
+     * @return
+     */
+    @Select("select id,order_number orderNumber,publisher_id publisherId,contact_name contactName,contact_number contactNumber" +
+            ",dormitory_building builderNumber,dormitory_number dormitoryNumber,company_name expressCompanyName,pickup_door pickupDoor," +
+            "pickup_address pickupAddress,pay_money payMoney," +
+            "remarks,publish_time publishTime,receiver_id,receive_time,is_received from published_express_order where order_number = #{orderNum}")
+    ExpressOrder getExpressOrderByOrderNum(String orderNum);
 
 
     /**

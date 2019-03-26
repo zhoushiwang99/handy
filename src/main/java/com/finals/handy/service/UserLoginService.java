@@ -24,8 +24,21 @@ public class UserLoginService {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * redis存放token的前缀
+     */
+    public static final String USER_TOKEN_PREFIX = "user:token:";
+
+    /**
+     * 设置token过期时间一周
+     */
+    public static final long TOKEN_EXPIRE_TIME = 60 * 60 * 24 * 7;
+
     @Autowired
     private UserLoginMapper userLoginMapper;
+
+    @Autowired
+    RedisService redisService;
 
     @Autowired
     JwService jwService;
@@ -51,28 +64,29 @@ public class UserLoginService {
 
             map.put("accessToken", accessToken);
             map.put("refreshToken", refreshToken);
+
+            redisService.set("user:token:" + user1.getId(),refreshToken, TOKEN_EXPIRE_TIME);
             map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
             return map;
         } catch (UnknownAccountException e) {
             map.put("code", ResponseCode.USER_NOT_EXIST.getValue());
-
+            return map;
         } catch (IncorrectCredentialsException e) {
             map.put("code", ResponseCode.PASSWORD_ERROR.getValue());
-
+            return map;
         } catch (LockedAccountException e) {
             int userId = addUserMapper.getUserIdByPhone(phone);
             map.put("userId",userId);
             map.put("code", ResponseCode.USER_NOT_VERIFY.getValue());
-
+            return map;
         } catch (DisabledAccountException e) {
             map.put("code", ResponseCode.USER_IS_BLACK.getValue());
-
+            return map;
         } catch (Exception e) {
             map.put("code", ResponseCode.SERVER_ERROR.getValue());
             e.printStackTrace();
+            return map;
         }
-
-        return map;
     }
 
     public Map<String, Object> xhLogin(String viewState, String password, String checkCode,
@@ -107,6 +121,11 @@ public class UserLoginService {
 
         map.put("accessToken", accessToken);
         map.put("refreshToken", refreshToken);
+
+        map.put("userId",userId);
+
+        redisService.set(USER_TOKEN_PREFIX + userId,refreshToken,TOKEN_EXPIRE_TIME);
+
         map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
         return map;
 

@@ -47,13 +47,10 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        System.out.println("----身份认证方法----");
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
         //从 UsernamePasswordToken中来获取phone
         String phone = usernamePasswordToken.getUsername();
-        System.out.println("phone" + phone);
         if(userLoginMapper.phoneExist(phone) != 1){
-            System.out.println("账号未知");
             throw new UnknownAccountException("手机号未注册");
         }
         if(!userLoginMapper.isUserVerifyByPhone(phone)){
