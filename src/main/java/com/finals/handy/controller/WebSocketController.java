@@ -98,7 +98,7 @@ public class WebSocketController {
 
     @ResponseBody
     @RequestMapping(value = "/deleteMsg", method = RequestMethod.GET)
-    public Map<String,Object> deleteMsg(Integer id) {
+    public Map<String,Object> deleteMsg(@RequestParam("id") Integer id) {
         messageService.deleteMessage(id);
         Map<String, Object> map = new HashMap<>();
         map.put("code", String.valueOf(ResponseCode.REQUEST_SUCCEED.getValue()));
