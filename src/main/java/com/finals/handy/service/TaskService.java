@@ -13,7 +13,6 @@ import com.finals.handy.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -36,6 +35,8 @@ public class TaskService {
     private ReportMapper reportMapper;
     @Autowired
     private CommentMapper commentMapper;
+
+    private static final String path = "d:/taskImg/";//"/root/handy/user/taskImg/";
 
     @Transactional
     public Map<String, Object> addTask(String accessToken, String name, String content, MultipartFile[] files) {
@@ -67,18 +68,6 @@ public class TaskService {
         Map<String, Object> map = new HashMap<>();
         List<String> list = new ArrayList();
         Integer taskId = task.getId();
-
-        String path = null;
-        try {
-            path = ResourceUtils.getURL("classpath:").getPath();
-            path = path + "/resources/img/";
-
-            System.out.println(path);
-
-        } catch (FileNotFoundException e) {
-            map.put("code", -1);
-            return map;
-        }
         for (MultipartFile multipartFile : files) {
             if (!multipartFile.isEmpty()) {
                 try {
@@ -93,9 +82,10 @@ public class TaskService {
                     System.out.println("fileName:" + fileName);
                     System.out.println(newName);
                     String imgPath = path + newName;
+                    System.out.println(imgPath);
                     File file1 = new File(imgPath);
                     list.add(imgPath);
-                    imgMapper.addImgPath(taskId, getURL() + "/img/" + newName);
+                    imgMapper.addImgPath(taskId, fileName);
                     BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file1));
                     outputStream.write(bytes);
                     outputStream.close();
@@ -350,5 +340,28 @@ public class TaskService {
             map.put("code", 1);
         }
         return map;
+    }
+
+    public Map<String, Object> getImg(String imgName) {
+        Map<String, Object> map = new HashMap<>();
+        String ImagePath = path + imgName;
+        File file = new File(ImagePath);
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            byte[] bytes = new byte[fileInputStream.available()];
+            fileInputStream.read(bytes);
+            map.put("img", bytes);
+            map.put("code", 0);
+            return map;
+        } catch (FileNotFoundException e) {
+            map.put("code", -1);
+            e.printStackTrace();
+            return map;
+        } catch (IOException e) {
+            map.put("code", -1);
+            e.printStackTrace();
+            return map;
+        }
+
     }
 }
