@@ -116,6 +116,7 @@ public class TaskController {
         return taskService.getComments(n,taskId);
     }
 
+//    获取图片
     @ResponseBody
     @RequestMapping(value = "/guest/getImg", method = RequestMethod.GET)
     public Map<String, Object> getImg(@RequestParam("imgName") String imgName) {

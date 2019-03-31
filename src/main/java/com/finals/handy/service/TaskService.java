@@ -36,7 +36,7 @@ public class TaskService {
     @Autowired
     private CommentMapper commentMapper;
 
-    private static final String path = "d:/taskImg/";//"/root/handy/user/taskImg/";
+    private static final String path ="/root/handy/user/taskImg/";//"d:/taskImg/";
 
     @Transactional
     public Map<String, Object> addTask(String accessToken, String name, String content, MultipartFile[] files) {
@@ -85,7 +85,7 @@ public class TaskService {
                     System.out.println(imgPath);
                     File file1 = new File(imgPath);
                     list.add(imgPath);
-                    imgMapper.addImgPath(taskId, fileName);
+                    imgMapper.addImgPath(taskId, newName);
                     BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file1));
                     outputStream.write(bytes);
                     outputStream.close();
@@ -355,7 +355,7 @@ public class TaskService {
             return map;
         } catch (FileNotFoundException e) {
             map.put("code", -1);
-            e.printStackTrace();
+            System.out.println("没有文件");
             return map;
         } catch (IOException e) {
             map.put("code", -1);
