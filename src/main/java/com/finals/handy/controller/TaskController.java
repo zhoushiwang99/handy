@@ -3,16 +3,10 @@ package com.finals.handy.controller;
 import com.finals.handy.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.*;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author xiaoqiang
@@ -122,5 +116,11 @@ public class TaskController {
         return taskService.getComments(n,taskId);
     }
 
+//    获取图片
+    @ResponseBody
+    @RequestMapping(value = "/guest/getImg", method = RequestMethod.GET)
+    public Map<String, Object> getImg(@RequestParam("imgName") String imgName) {
+        return taskService.getImg(imgName);
+    }
 
 }
