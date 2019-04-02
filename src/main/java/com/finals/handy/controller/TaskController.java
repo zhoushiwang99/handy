@@ -122,5 +122,4 @@ public class TaskController {
     public Map<String, Object> getImg(@RequestParam("imgName") String imgName) {
         return taskService.getImg(imgName);
     }
-
 }

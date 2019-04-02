@@ -13,6 +13,7 @@ import com.finals.handy.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -59,8 +60,12 @@ public class TaskService {
             map.put("code", -1);
             throw new RuntimeException();
         }
-        map = dealImg(files, task);
+        if (files == null) {
+            map.put("msg", "文件为空没有图片");
+        } else {
+            map = dealImg(files, task);
 
+        }
         return map;
     }
     @Transactional
@@ -208,6 +213,7 @@ public class TaskService {
         if (task.getAcceptId() == userId) {
             taskMapper.cancelTask(id);
         } else {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             map.put("code", 1);
             return map;
         }
@@ -226,6 +232,7 @@ public class TaskService {
             taskMapper.deleteTask(id);
         } else {
             map.put("code", 5);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return map;
         }
         map.put("code", 0);
@@ -249,6 +256,7 @@ public class TaskService {
         }
 //        删除举报  不成功
         else if (!reportMapper.deleteReport(id)) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             map.put("code", 1);
 
         } else {
@@ -288,6 +296,7 @@ public class TaskService {
         if (commentMapper.reportComment(report.getId(), id)) {
             map.put("code", 0);
         } else {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             map.put("code", 1);
         }
 
@@ -337,6 +346,7 @@ public class TaskService {
             taskMapper.finishTask(id);
             map.put("code", 0);
         } else {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             map.put("code", 1);
         }
         return map;
