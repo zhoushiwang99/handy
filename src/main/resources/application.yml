@@ -23,11 +23,12 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
   redis:
     host: 47.106.159.165
-    port: 6379
+    port: 6380
+    password: zsw990807
+
 jwt:
   access:
     secret: accesstokensecret
-
 
 
 mybatis:
@@ -49,3 +50,6 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
+
+server:
+  port: 8080
