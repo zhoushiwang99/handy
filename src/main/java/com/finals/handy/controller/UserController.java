@@ -28,7 +28,7 @@ public class UserController {
     @PostMapping("/user/getUserScore")
     public Map<String,Object> getUserScore(@RequestParam("accessToken") String accessToken){
         Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(accessToken);
-        Integer userId = claimMap.get("userId").asInt();
+        Integer userId = Integer.valueOf(claimMap.get("userId").asString());
         Map<String, Object> map = userService.getUserScore(userId);
         return map;
     }
@@ -43,7 +43,7 @@ public class UserController {
     @PostMapping("/user/getHeadImg")
     public Map<String,Object> getHeadImg(@RequestParam("accessToken") String accessToken){
         Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(accessToken);
-        Integer userId = claimMap.get("userId").asInt();
+        Integer userId = Integer.valueOf(claimMap.get("userId").asString());
         Map<String, Object> map = userService.getHeadImg(userId);
         return map;
     }
