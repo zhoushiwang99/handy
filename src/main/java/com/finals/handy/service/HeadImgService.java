@@ -48,13 +48,16 @@ public class HeadImgService {
 
     private List<String> imgSuffix = new ArrayList<>(Arrays.asList(".jpg", ".png", ".jpeg"));
 
-    public Map<String, Object> getUserScore(String accessToken) {
+    public Map<String, Object> getUserScore(Integer userId1) {
         Map<String, Object> map = new HashMap<>(16);
-        Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(accessToken);
-        String userId = claimMap.get("userId").asString();
 
+        String userId = String.valueOf(userId1);
         if (accountMapper.ifUserHasScoreByUserId(userId) != 1) {
             accountMapper.addUserScoreInfo(userId);
+            map.put("publishNum", 0);
+            map.put("receiveNum", 0);
+            map.put("score", 0);
+            map.put("code", ResponseCode.REQUEST_SUCCEED.getValue());
             return map;
         } else {
             int publishNum = accountMapper.getUserPublishOrderNumByUserId(userId);
@@ -120,10 +123,9 @@ public class HeadImgService {
         }
     }
 
-    public Map<String, Object> getHeadImg(String accessToken) {
+    public Map<String, Object> getHeadImg(Integer userId1) {
         Map<String, Object> map = new HashMap<>(16);
-        Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(accessToken);
-        String userId = claimMap.get("userId").asString();
+        String userId = String.valueOf(userId1);
         String imgPath = userHeadImgMapper.getHeadImgPathByUserId(userId);
         byte[] bytes;
         System.out.println("path:" + imgPath);

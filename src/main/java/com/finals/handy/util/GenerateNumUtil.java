@@ -40,24 +40,6 @@ public class GenerateNumUtil {
      */
     public static String IDLE_RESOURCES_ORDER_PREFIX = "4";
 
-/*
-    private GenerateNumUtil() {
-    }
-
-    private static volatile GenerateNumUtil generateNumUtil = null;
-
-    public static GenerateNumUtil getGenerateNumInstance() {
-        if (generateNumUtil == null) {
-            synchronized (GenerateNumUtil.class) {
-                if (generateNumUtil == null) {
-                    generateNumUtil = new GenerateNumUtil();
-                }
-            }
-        }
-        return generateNumUtil;
-    }
-*/
-
     /**
      * 每日代购食物订单数量
      */

@@ -1,6 +1,5 @@
 package com.finals.handy.shiro.filter;
 
-import com.alibaba.fastjson.JSON;
 import com.finals.handy.constant.ResponseCode;
 import com.finals.handy.shiro.JwtToken;
 import com.finals.handy.shiro.exception.MyTokenErrorException;
@@ -12,8 +11,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author zsw
@@ -38,13 +35,13 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
 
-        int code = (int) request.getAttribute("status");
-        Map<String,Object> map = new HashMap<>(16);
-        map.put("code",code);
-        String json = JSON.toJSONString(map);
+        Integer code = (Integer) request.getAttribute("status");
+//        Map<String,Object> map = new HashMap<>(16);
+//        map.put("code",code);
+//        String json = JSON.toJSONString(map);
         HttpServletResponse response1 = (HttpServletResponse) response;
         PrintWriter writer = response1.getWriter();
-        writer.write(json);
+        writer.print(code);
         return false;
     }
 
