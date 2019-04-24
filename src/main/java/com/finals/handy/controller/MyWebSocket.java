@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 @Controller
-@ServerEndpoint(value = "/user/websocket/{AccessToken}/{otherId}")
+@ServerEndpoint(value = "/guest/websocket/{AccessToken}/{otherId}")
 public class MyWebSocket {
 
 
@@ -39,17 +39,30 @@ public class MyWebSocket {
     private Integer userId;
     //与某个客户端的连接会话，需要通过它来给客户端发送数据
     private Session session;
-
+    private Integer getId(String AccessToken) {
+        Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(AccessToken);
+        String id = claimMap.get("userId").asString();
+        Integer userId = Integer.parseInt(id);
+        return userId;
+    }
     /**
      * 连接建立成功调用的方法
      */
     @OnOpen
-    public void onOpen(Session session,@PathParam("AccessToken") String AccessToken, @PathParam("otherId") Integer otherId) {
+    public void onOpen(Session session, @PathParam("AccessToken") String AccessToken, @PathParam("otherId") Integer otherId) {
+
         System.out.println(AccessToken);
         System.out.println(otherId);
        /* Map<String, Claim> claimMap = JwtUtil.verifyAccessToken(AccessToken);
         String id = claimMap.get("userId").asString();*/
-        Integer userId =Integer.parseInt(AccessToken);
+        Integer userId=null;
+        try {
+           userId = getId(AccessToken);//Integer.parseInt(AccessToken);
+        } catch (Exception e) {
+            System.out.println("连接失败");
+            return;
+        }
+        System.out.println(userId);
         this.session = session;
         this.userId = userId;
         webSocketSet.add(this);     //加入set中
